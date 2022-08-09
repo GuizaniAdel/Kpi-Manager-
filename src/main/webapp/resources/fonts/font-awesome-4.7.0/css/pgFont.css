@@ -1,0 +1,20 @@
+
+
+@font-face {
+  font-family: 'pgFont';
+  src: url('../fonts/pgFont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+[class^="icon-pg-"],
+[class*=" icon-pg-"] {
+  font-family: pgFont;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+  -webkit-font-smoothing: antialiased;
+}
+
+.icon-pg-logo:before                { content: "\0065"; }

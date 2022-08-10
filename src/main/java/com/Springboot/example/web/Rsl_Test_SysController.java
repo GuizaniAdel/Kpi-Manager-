@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,10 +67,10 @@ public class Rsl_Test_SysController {
 
     @RequestMapping(value="/resultat2",method= RequestMethod.GET)
     public String GetRes(Model model,@RequestParam("kpiii") String[ ] kpis
-            ,@RequestParam("DateDeb") String dateDeb,@RequestParam("DateFin") String dateFin
+            ,@RequestParam("DateDeb") String dateDeb,@RequestParam("DateFin") String dateFin //, @RequestParam("PlanTask") String PlanTask  //here 
             ,@RequestParam("db1")long db1 ,@RequestParam("db2")Long db2) throws Exception {
-
-
+    	//LocalDate localDate = LocalDate.now();
+    	//while (new SimpleDateFormat("yyy-MM-dd").parse(PlanTask).equals(localDate)) ; 
         if(new SimpleDateFormat("yyyy-MM-dd").parse(dateDeb).compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(dateFin))>0){
             model.addAttribute("message","date Deb supérieur à date Fin");
             return "resultat";
@@ -85,7 +86,7 @@ public class Rsl_Test_SysController {
             for (Requete r : k.getRequetess()) {
                 if (r1 != r) {
                     r1 = r;
-
+                    
                     if (dbrepository.findDatabaseById(db2).equals(r.getId_databasee()) || dbrepository.findDatabaseById(db1).equals(r.getId_databasee())){
 
                         if (r.getId_databasee().getSystem().equals("SqlServer")) {

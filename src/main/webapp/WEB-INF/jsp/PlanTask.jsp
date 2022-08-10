@@ -126,7 +126,7 @@
                        <span class="fa fa-chevron-down"></span></a>
                        <ul class="nav child_menu" style="display: block;">
                        <li  ><a href="resultat">Lanch Script</a>
-                       <li  ><a href="resultat">Plan Task</a>
+                       <li  ><a href="PlanTask">Plan Task</a>
                        
                        </ul>
                       </li>

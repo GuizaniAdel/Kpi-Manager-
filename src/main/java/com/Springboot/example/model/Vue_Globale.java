@@ -30,9 +30,19 @@ public class Vue_Globale {
 	public int FoundDB2;
 	public String tempsExec ;
 	public String dateExec ;
-	public  String DataQualite;
+	public  float DataQualite;
+	public String val_dim ;
+	@Column(name ="seuil")
+	public float seuil ;
+	@Column(name="seuil_gap")
+	public Float seuil_gap;
+	@Column(name="seuil_dataQuality")
+	public Float seuil_dataQuality;
 	@Column(name = "acceptation")
 	public String acceptation;
+	private String DateDeb;
+	private String DateFin;
+
 
 
 	public String getAcceptation() {
@@ -43,11 +53,11 @@ public class Vue_Globale {
 		this.acceptation = acceptation;
 	}
 
-	public  String getDataQualite() {
+	public  float getDataQualite() {
 		return DataQualite;
 	}
-	public void setDataQualite( String d) {
-		DataQualite = d;
+	public void setDataQualite( float f) {
+		DataQualite = f;
 	}
 	public String getDateExec() {
 		return dateExec;
@@ -103,6 +113,18 @@ public class Vue_Globale {
 	public void setDate(String date) {
 		Date = date;
 	}
+	public String getDateFin() {
+		return DateFin;
+	}
+	public void setDateFin(String datefin) {
+		DateFin = datefin;
+	}
+	public String getDateDeb() {
+		return Date;
+	}
+	public void setDateDeb(String datedeb) {
+		DateDeb = datedeb;
+	}
 	public Long getCode_requete() {
 		return Code_requete;
 	}
@@ -144,4 +166,42 @@ public class Vue_Globale {
 	public int getId() {
 		return id;
 	}
+
+	public void setVal_dim(String val_dim) {
+		this.val_dim = val_dim; 
+		
+	}
+	public String getVal_dim() {
+		return  val_dim; 
+		
+	}
+	public float getSeuil() {
+		return seuil;
+	}
+	public void setSeuil(float seuil) {
+		this.seuil = seuil;
+	}
+
+	public void setSeuil_gap(Float seuil_gap) {
+		this.seuil_gap = seuil_gap;
+	}
+
+	public void setSeuil_dataQuality(Float seuil_dataQuality) {
+		this.seuil_dataQuality = seuil_dataQuality;
+	}
+
+	public Float getSeuil_gap() {
+		return seuil_gap;
+	}
+
+	public Float getSeuil_dataQuality() {
+		return seuil_dataQuality;
+	}
+
+	 
+		
+	
+
+
+
 }

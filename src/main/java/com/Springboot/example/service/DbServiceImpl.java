@@ -4,6 +4,7 @@ package com.Springboot.example.service;
 import com.Springboot.example.model.Requete;
 import com.Springboot.example.repository.DbRepository;
 import com.Springboot.example.model.Database;
+import com.Springboot.example.model.Database1;
 import com.Springboot.example.repository.RequeteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -225,6 +226,6 @@ public class DbServiceImpl implements DbService {
 	        }  
 	    }catch(Exception e){System.out.println(e);}  
 	    return u;  
-	}  
+	}    
 	} 
 

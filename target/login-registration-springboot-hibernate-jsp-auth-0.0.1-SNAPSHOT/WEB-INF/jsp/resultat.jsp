@@ -126,6 +126,7 @@
                        <span class="fa fa-chevron-down"></span></a>
                        <ul class="nav child_menu" style="display: block;">
                        <li  ><a href="resultat">Lanch Script</a>
+                       <li  ><a href="resultat">Plan Task</a>
                        
                        </ul>
                       </li>
@@ -215,11 +216,18 @@
                     <br />
                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="get" action ="resultat">
                         <p style="color:red;">${message}</p>
+                          </div>
+                           
+                        <a href="deleteAll"> Delete Old Data </a>
+                        <a href="deletekpi"> Delete Single Kpi </a>
+                        <h3>${msg }</h3>
+                      </div>
                       <div class="form-group row">
                         <label class="control-label col-md-2 col-sm-2 label-align" >Database 1 <span class="required">*</span>
                         </label>
-                        <div class="col-md-3 col-sm-3 ">
                          
+                        <div class="col-md-3 col-sm-3 ">
+                       
                           <select  class="browser-default custom-select" id="select" name="db1" >
                              <% if( (request.getParameter("db1")!=null) && (request.getParameter("db2")!=null)) {
                             	   %>
@@ -341,18 +349,24 @@
                       <div class="ln_solid"></div>
                       <div class="item form-group">
                         <div class="col-md-6 col-sm-6 offset-md-3">
-                        <button class="btn btn-primary" type="button" onclick="generateReportC();" >See Resultat Only</button>
+                        <button class="btn btn-primary" type="button" onclick="generateReportC();" >See Results Only</button>
                           <button class="btn btn-primary" type="button" onclick="generateReportB();" >Load DB 1</button>
 						  <button class="btn btn-primary" type="reset"  onclick="generateReportA();" >Load DB 2</button>
                          <button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportD();"> Load data from two databases</button>
-                     
+          				<button id="load12" class="btn btn-primary" type="button" name="PlanTask"  onclick="generateReportD();"> Plan Task</button>
                         </div>
+                      </div>
+                      
+                     	 <label class="col-form-label col-md-2 col-sm-2 label-align" >  Choose Task Date   <span class="required">*</span>
+                        </label>
+                      <div class="col-md-3 col-sm-3 ">
+                          <input id="PlanTask"class="form-control" type="date" name="PlanTask" >
                       </div>
     <div class="modal fade" id="exampleModalLong3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle2" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Veuillez Maintenant cocher les Kpis à tester </h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">Would You Please Mark The Kpis For The Test </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -361,7 +375,7 @@
        
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-secondary"  >Retour</button>
+            <button type="submit" class="btn btn-secondary"  >Previous</button>
              
            
           </div>
@@ -515,12 +529,12 @@
 		  
 		}
 	function generateReportA(){
-		   document.forms['demo-form2'].action = ' resultat3';
+		   document.forms['demo-form2'].action = ' resultat200';
 		   document.forms['demo-form2'].submit();
 		  
 		}
 	function generateReportB(){
-		   document.forms['demo-form2'].action = ' resultat4';
+		   document.forms['demo-form2'].action = ' resultat20';
 		   document.forms['demo-form2'].submit();
 		  
 		}

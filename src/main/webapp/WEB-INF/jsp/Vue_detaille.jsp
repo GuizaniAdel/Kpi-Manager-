@@ -210,7 +210,8 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                           <th>Value DB1</th>
                           <th>Value DB2</th>
                           <th>GAP</th>
-                          
+                            <th> Flag OK</th>
+                          <th> Flag Not OK</th>
                           
                           
                        
@@ -224,11 +225,12 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                         <td>${u.getCode_requete()}</td>
                         <td>${u.getDate()}</td>
                         <td>${u. getName_kpi()}</td>                       
-                        <td>${u.getGroupement()} </td> 
+                        <td>${u.getVal_dim()} </td> 
                         <td>${u.getVal_kpi1()}</td> 
                          <td>${u.getVal_kpi2()}</td>
                          <td>${u.getGap()} </td> 
-                         
+                              <td>${u.getNbreRecordOk()} </td>
+                              <td>${u.getNbreRecordNotOk()} </td>
                          
                          
                          </tr>

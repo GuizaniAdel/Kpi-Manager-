@@ -41,8 +41,8 @@ public class KpiServiceImp implements KpiService {
 	}
 
 	@Override
-	public void deleteKpi(Long id) {
-	 kpirepository.deleteById(id);
+	public void deleteKpi(Long id_kpi) {
+	 kpirepository.deleteById(id_kpi);
 		
 	}
 	@SuppressWarnings("unchecked")

@@ -195,6 +195,7 @@
                           <th>Seuil</th>
                           <th> Update</th>
                            <th> Add requete</th>
+                              <th> Delete Kpi</th>
                         </tr>
                       </thead>
                        <tbody>
@@ -214,8 +215,11 @@
              <a type="submit"  href ="<c:url value='/addRequete/${emp.id_kpi}' />" class="btn btn-success btn-xs">
 
              <i class="fa fa-plus-square"></i> </a> </td>
-            
-          
+               <td>
+             <a type="submit"  href ="<c:url value='/deleteKpi/${emp.id_kpi}' />" class="btn btn-danger btn-xs">
+                <i class="fa fa-trash-o"></i>
+                </a> 
+            </td>
        </tr>
        </c:forEach>
                        </tbody>

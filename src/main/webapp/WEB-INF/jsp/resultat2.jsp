@@ -114,7 +114,9 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                        <span class="fa fa-chevron-down"></span></a>
                        <ul class="nav child_menu" style="display: block;">
                        <li  ><a href="resultat">Lanch Script</a>
-                       <li class="current-page" ><a >Vue Global</a>
+                       <li class="current-page" ><a >Vue Details</a>
+                       <li  ><a href="resultat3">Vue Global</a>
+                       
                        
                        </ul>
                       </li>
@@ -209,20 +211,22 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                         <th>Date</th>
                           <th >Code_requete</th>
                           <th>Name_kpi</th>
+                            <th>Dimension</th>
                           <th>Value in <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></th>
                           <th>Value in <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%></th>
                           <th> GAP</th>
                           <th> GAP %</th>
-                          <th> Data Quality</th>
+               
+                         <%-- <th> Data Quality</th>
                             <th> Acceptation</th>
-                           <th> Number Records <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></th>
-                            <th>Number Records <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%></th>
-                          <th> Number Records OK</th>
-                          <th> Number Records Not OK</th>
-                          <th> Not Found in  <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></th>
+                           <th> Number Records <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()</th>
+                            <th>Number Records <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%></th>--%>
+                          <th> Flag OK</th>
+                          <th> Flag Not OK</th>
+                         <%--  <th> Not Found in  <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></th>
                           <th> Not Found in  <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%></th>
                           <th> Temps Exec</th>
-                          <th> Date Exec</th>
+                          <th> Date Exec</th> --%>
                        
                         </tr>
                       </thead>
@@ -238,13 +242,19 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
            </td>
                          <td>${u.getDate()}</td>
                         <td>${u.getCode_requete()}</td>
-                        <td>${u. getName_kpi()}</td>                       
+                        <td>${u. getName_kpi()}</td>   
+                           <td>${u.getVal_dim()}</td>  
+                                            
                    
                         <td>${u.getVal_kpi1()}</td> 
                          <td>${u.getVal_kpi2()}</td>
                          <td>${u.getGap()} </td> 
                          <td> ${u.getGAP_par_100()}% </td>
-                         <td>${u.getDataQualite()}% </td>
+                                       
+             
+               
+                  
+                      <%--   <td>${u.getDataQualite()}% </td>
                              <c:if test="${u.acceptation=='OK'}">
                              <td> <span style='background-color:#00FF00;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td>
                              </c:if>
@@ -257,21 +267,21 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                                  <td> <span style='background-color:#90EE90;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td>
                              </c:if>
                              <td>${u.getLoad1()}</td>
-                         <td>${u.getLoad2()} </td>
+                       <td>${u.getLoad2()} </td>--%>
                           
                              <td>${u.getNbreRecordOk()} </td>
                               <td>${u.getNbreRecordNotOk()} </td>
-                               <td>${u.getFoundDB1()} </td>
+                         <%--       <td>${u.getFoundDB1()} </td>
                                  <td>${u.getFoundDB2()} </td>
                                <td>${u.getTempsExec()} </td>
-                               <td>${u.getDateExec()} </td>
+                               <td>${u.getDateExec()} </td> --%>
                          </tr>
                         
                          </c:forEach>
                       </tbody>
                     </table>
                   
-             <button class="btn btn-primary" type="submit" onclick="generateReportC();" >Voir Details</button>
+             <button class="btn btn-primary" type="submit" onclick=" generateReportC();" >Voir Details</button>
                     </div>
        
                      </div>

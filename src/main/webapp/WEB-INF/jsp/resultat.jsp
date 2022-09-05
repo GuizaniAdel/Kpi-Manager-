@@ -70,6 +70,7 @@
 .select-box1 {
   background: #ececec;
 }
+   h5{text-align: left;} 
 </style>
   <body class="nav-md">
     <div class="container body">
@@ -216,11 +217,19 @@
                     <br />
                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="get" action ="resultat">
                         <p style="color:red;">${message}</p>
+                          </div>
+                           
+                        <a href="deleteAll"> Delete Old Data </a>
+             
+                        <h3>${msg }</h3>
+                      </div>
+
                       <div class="form-group row">
-                        <label class="control-label col-md-2 col-sm-2 label-align" >Database 1 <span class="required">*</span>
+                        <label class="control-label col-md-2 col-sm-2 label-align" >Database 1 <span class="required"> =  </span>
                         </label>
-                        <div class="col-md-3 col-sm-3 ">
                          
+                        <div class="col-md-3 col-sm-3 ">
+                       
                           <select  class="browser-default custom-select" id="select" name="db1" >
                              <% if( (request.getParameter("db1")!=null) && (request.getParameter("db2")!=null)) {
                             	   %>
@@ -234,7 +243,7 @@
                              </select>
                         </div>
                      
-                        <label class="col-form-label col-md-2 col-sm-2 label-align" >Database 2 <span class="required">*</span>
+                        <label class="col-form-label col-md-2 col-sm-2 label-align" >Database 2 <span class="required"> = </span>
                         </label>
                         <div class="col-md-3 col-sm-3 ">
                          
@@ -247,18 +256,20 @@
                          <option>--- Select Database ----</option>
                           <c:forEach items="${databaseList}"  var="emp">
                              <option value="${emp.id}">${emp.name} </option>
-                             </c:forEach>
+                             </c:forEach> 
+                             
                              </select>
+                     
                         </div>
-                        <button class="btn btn-primary" type="submit"> Load Kpi</button>
+                        <button class="btn btn-primary" type="submit"> Load Kpi List</button>
                       </div>
          
                                
                                <% if( (request.getParameter("db1")!=null) && (request.getParameter("db2")!=null)) {
                             	   %>
-                               
-                       <h5>database 1 : <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></h5>
-                        <h5>database 2 : <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%></h5>
+                       
+                        <h5>===== Database 1 : <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%> =================== Database 2 : <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%>===============</h5>   
+                         
                         <% 
                         } 
                         %>
@@ -342,11 +353,15 @@
                       <div class="ln_solid"></div>
                       <div class="item form-group">
                         <div class="col-md-6 col-sm-6 offset-md-3">
-                        <button class="btn btn-primary" type="button" onclick="generateReportC();" >See Results Only</button>
+                       		 <button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportX();"> Clean Test Data</button>
+          			 		<button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportH();"> Clean Vue Details Data</button>	
                           <button class="btn btn-primary" type="button" onclick="generateReportB();" >Load DB 1</button>
 						  <button class="btn btn-primary" type="reset"  onclick="generateReportA();" >Load DB 2</button>
                          <button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportD();"> Load data from two databases</button>
-          				<button id="load12" class="btn btn-primary" type="button" name="PlanTask"  onclick="generateReportD();"> Plan Task</button>
+          				
+          		
+          			 		  <button class="btn btn-primary" type="reset"  onclick="generateReportY();" >Vue Details</button>
+ 					<button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportZ();"> Vue Global</button>				
                         </div>
                       </div>
                       
@@ -522,17 +537,32 @@
 		  
 		}
 	function generateReportA(){
-		   document.forms['demo-form2'].action = ' resultat3';
+		   document.forms['demo-form2'].action = ' resultat200';
 		   document.forms['demo-form2'].submit();
 		  
 		}
 	function generateReportB(){
-		   document.forms['demo-form2'].action = ' resultat4';
+		   document.forms['demo-form2'].action = ' resultat20';
 		   document.forms['demo-form2'].submit();
 		  
 		}
-	function generateReportC(){
-		   document.forms['demo-form2'].action = ' resultat5';
+	function generateReportX(){
+		   document.forms['demo-form2'].action = ' deletekpi';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportZ(){
+		   document.forms['demo-form2'].action = ' Vue_Global';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportY(){
+		   document.forms['demo-form2'].action = ' Vue_detaille';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportH(){
+		   document.forms['demo-form2'].action = ' deletevd';
 		   document.forms['demo-form2'].submit();
 		  
 		}

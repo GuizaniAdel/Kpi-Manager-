@@ -25,12 +25,12 @@ public class RequeteSeviceImp implements RequeteService {
                 Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + r.getId_databasee().getPort() +
                                 ";databaseName=" + r.getId_databasee().getName()
                         , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
-
+           
                 String date = r.getDate();
                 String copr = r.getCopr();
                 String val_kpi = r.val_kpi;
                 String alias_val_kpi = r.val_kpi_alias;
-
+                Database name_database = r.getName_database();
 
                 System.out.println(valdim.length);
                 String dimension = " ";
@@ -64,14 +64,14 @@ public class RequeteSeviceImp implements RequeteService {
             try {
                 Connection conn = null;
                 Class.forName("org.postgresql.Driver");
-                conn = DriverManager.getConnection("jdbc:postgresql://localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName()
+                conn = DriverManager.getConnection("jdbc:postgresql://localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName_database()
                         , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
 
                 String date = r.getDate();
                 String copr = r.getCopr();
                 String val_kpi = r.val_kpi;
                 String alias_val_kpi = r.val_kpi_alias;
-
+                Database name_database = r.getName_database();
 
                 List<Dimension> dimss = r.getDims();
                 String dimension = " ";
@@ -82,9 +82,10 @@ public class RequeteSeviceImp implements RequeteService {
                         dimension = dimension + d.getVal_dim() + " ||'|'|| ";
                     }
                 }
-                System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb + "' and " + dateFin + " group by " + date + " ," + dimension);
+                System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb + "' and "  + dateFin + " group by " + date + " ," + dimension);
 
-                PreparedStatement ps = conn.prepareStatement("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by " + date + " ," + dimension);
+           
+				PreparedStatement ps = conn.prepareStatement("Select " + date + " as date, " + r.getName_database() +"as name_database, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by " + date + " ," + dimension);
                 ResultSet rs = ps.executeQuery();
 
                 return "Requete Correcte";

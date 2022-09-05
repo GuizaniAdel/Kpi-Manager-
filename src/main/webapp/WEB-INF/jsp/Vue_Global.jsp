@@ -1,5 +1,5 @@
 <%@page import="javax.persistence.Query"%>
-<%
+
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -116,7 +116,7 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                        <ul class="nav child_menu" style="display: block;">
                        <li  ><a href="resultat">Lanch Script</a>
                       <li class="current-page" ><a href="Vue_Global">Vue Global</a>
-                       <li  ><a href="Vue_detaille" >Vue Detaillé</a>
+                       <li  ><a href="resultat2" >Vue Detaillé</a>
                        </ul>
                       </li>
                 </ul>
@@ -200,7 +200,27 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
             
                        <div class="card-box table-responsive">
                   
+                  <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr role="row">
+                     <th>Seuil Kpi</th>
+                          <th >Seuil GAP</th>
+                          <th>Seuil Data Quality</th>
+                            </tr>
+                                   </thead>
+                                      <tbody>
+                                      <c:forEach items="${rslt}" var="u">
+                                     
+                         <tr><td>${u.getSeuil()}</td>
+                        <td>${u.getSeuil_gap()}</td>
+                        <td>${u. getSeuil_dataQuality()}</td> 
+                             </tr>
+                        
+                         </c:forEach>
+                      </tbody>
+                    </table>
                  
+                  
                        <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
                       <thead>
                         <tr role="row">

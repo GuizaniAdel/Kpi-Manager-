@@ -5,11 +5,15 @@ import com.Springboot.example.model.Vue_Globale;
 import com.Springboot.example.repository.Rsl_test_sysRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,6 +34,7 @@ public class Rsl_test_sysServiceImp implements Rsl_test_sysService {
 		Rsl_test_sysrepository.save(toEntitykpi(Rsl_test_sys));
 		
 	}
+	
 	private Rsl_test_sys toEntitykpi(Rsl_test_sys Rsl_test_sys) {
 		Rsl_test_sys r = new Rsl_test_sys();
 		    r.setIdKpi(Rsl_test_sys.getIdKpi());
@@ -43,11 +48,20 @@ public class Rsl_test_sysServiceImp implements Rsl_test_sysService {
 	public List<Rsl_test_sys> getAllkpi() {
 	     return Rsl_test_sysrepository.findAll();
 	}
-	@Override
-	public void deleteRsl_test_sys(Integer id) {
-		Rsl_test_sysrepository.deleteById(id);
-		
-	}
+//	@Override
+//	public void deleteRsl_test_sys(Integer id) {
+//		Rsl_test_sysrepository.deleteById(id);
+//		
+//	}
+//	@RequestMapping("deleteall")
+//	public void deleteRsl_test_sysAll() {
+//		Rsl_test_sysrepository.deleteAll();
+//		return rslt;
+//	}
+
+
+	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Vue_Globale> getCompKpi() throws Exception {
@@ -103,6 +117,7 @@ public class Rsl_test_sysServiceImp implements Rsl_test_sysService {
 
         ResultSet rs = ps.executeQuery();
         ResultSet rs1 = ps1.executeQuery();
+        ResultSet rs2 = ps2.executeQuery();
        
         while ( rs.next() && rs1.next()  )
         {
@@ -110,8 +125,8 @@ public class Rsl_test_sysServiceImp implements Rsl_test_sysService {
           blog.setDate(rs.getString("Date"));
           blog.setCode_requete(rs.getLong("Code_requete"));
           blog.setNbreRecordOk(rs1.getInt("val5"));
-          blog.setVal_kpi1( rs.getLong("val3"));
-          blog.setVal_kpi2(rs.getLong("val4"));
+    //      blog.setVal_kpi1( rs.getLong("val3"));
+   //       blog.setVal_kpi2(rs.getLong("val4"));
           blog.setName_kpi(rs.getString("name"));
           blog.setLoad1(rs.getString("val1"));
           blog.setLoad2(rs.getString("val2"));
@@ -138,8 +153,8 @@ public class Rsl_test_sysServiceImp implements Rsl_test_sysService {
         conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/GreenPlumDHW"
                 ,"postgres","root");
         
-        PreparedStatement ps = conn.prepareStatement("select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as valeur1"
-        		+ " , b.val_kpi as valeur2 , k.name_kpi as name from rsl_test_sys a ,rsl_test_sys b ,kpi k \r\n" + 
+        PreparedStatement ps = conn.prepareStatement("select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as valeur1" +
+        		" , b.val_kpi as valeur2 , k.name_kpi as name from rsl_test_sys a ,rsl_test_sys b ,kpi k \r\n" + 
 				"where b.valeur_dim = a.valeur_dim \r\n" + 
 				"and b.idkpi = a.idkpi \r\n" + 
 				"and a.idkpi = k.id_kpi and abs(b.val_kpi - a.val_kpi) > k.seuil ");
@@ -152,8 +167,8 @@ public class Rsl_test_sysServiceImp implements Rsl_test_sysService {
           blog.setDate(rs.getString("Date"));
           blog.setCode_requete(rs.getLong("Code_requete"));
          
-          blog.setVal_kpi1( rs.getLong("valeur1"));
-          blog.setVal_kpi2(rs.getLong("valeur2"));
+       //   blog.setVal_kpi1( rs.getLong("valeur1"));
+      //    blog.setVal_kpi2(rs.getLong("valeur2"));
           blog.setName_kpi(rs.getString("name"));
          
 
@@ -194,9 +209,9 @@ public class Rsl_test_sysServiceImp implements Rsl_test_sysService {
 		em.createNativeQuery("INSERT into rsl_test_sys \n" +
 				"(date,idkpi,system,valeur_dim,val_kpi,id_kpi)\n" +
 				"VALUES\n" +
-				"(?,?,?,?,?,?)\n" +
-				"ON CONFLICT  (id)\n" +
-				"DO UPDATE SET val_kpi=EXCLUDED.val_kpi")
+				"(?,?,?,?,?,?)\n") 
+				//"ON CONFLICT  (date,idkpi,system,valeur_dim)\n" +
+				//"DO update set val_kpi=excluded.val_kpi")
 				.setParameter(1,r.date)
 				.setParameter(2,r.idKpi)
 				.setParameter(3,r.systeme)
@@ -205,6 +220,9 @@ public class Rsl_test_sysServiceImp implements Rsl_test_sysService {
 		        .setParameter(6,r.getKpi().id_kpi)
 				.executeUpdate()   ;
 	}
+
+
+
 
 
 }

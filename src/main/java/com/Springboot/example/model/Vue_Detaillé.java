@@ -15,12 +15,16 @@ public class Vue_Detaillé {
     public int id ;
     public String date ;
     public long code_requete;
-    public String groupement;
+
     public double val_kpi1;
     public  double val_kpi2;
     public String name_kpi;
     public double gap;
-
+  
+	public String GAP_par_100;
+	public int NbreRecordOk ;
+	public int NbreRecordNotOk;
+	public String val_dim;
     public int getId() {
         return id;
     }
@@ -45,13 +49,7 @@ public class Vue_Detaillé {
         this.code_requete = code_requete;
     }
 
-    public String getGroupement() {
-        return groupement;
-    }
 
-    public void setGroupement(String groupement) {
-        this.groupement = groupement;
-    }
 
     public double getVal_kpi1() {
         return val_kpi1;
@@ -84,4 +82,36 @@ public class Vue_Detaillé {
     public void setGap(double gap) {
         this.gap = gap;
     }
+
+	
+
+    public void setVal_dim(String val_dim) {
+		this.val_dim = val_dim; 
+		
+	}
+	public String getVal_dim() {
+		return  val_dim; 
+		
+	}
+
+	
+	public int getNbreRecordOk() {
+		return NbreRecordOk;
+	}
+	public void setNbreRecordOk(int nbreRecordOk) {
+		NbreRecordOk = nbreRecordOk;
+	}
+	public int getNbreRecordNotOk() {
+		return NbreRecordNotOk;
+	}
+	public void setNbreRecordNotOk(int nbreRecordNotOk) {
+		NbreRecordNotOk = nbreRecordNotOk;
+	}
+
+	public String getGAP_par_100() {
+		return GAP_par_100;
+	}
+	public void setGAP_par_100(String gAP_par_100) {
+		GAP_par_100 = gAP_par_100;
+	}
 }

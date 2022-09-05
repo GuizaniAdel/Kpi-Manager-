@@ -48,8 +48,21 @@ public class Requete implements Serializable {
 	   @JoinColumn(name="id_database")
 	   @ManyToOne
 	   private Database id_databasee;
+	   @JoinColumn(name="name_database")
+	   @ManyToOne
+	   private Database name_database;
 	   
-	    @JoinColumn(name="id_kpi",  nullable=false)
+	   
+	   
+	    public Database getName_database() {
+		return name_database;
+	}
+
+	public void setName_database(Database name_database) {
+		this.name_database = name_database;
+	}
+
+		@JoinColumn(name="id_kpi",  nullable=false)
 	    @ManyToOne
 	   private Kpi kpi;
 
@@ -139,7 +152,7 @@ public class Requete implements Serializable {
 	
 
 	public Requete(int code_requete, String date, String val_kpi, String val_kpi_alias, String copr, String date_image,
-                   List<Dimension> dims, Database id_databasee, Kpi id_kpii) {
+                   List<Dimension> dims, Database id_databasee, Database name_database ,Kpi id_kpii) {
 		super();
 		this.code_requete = code_requete;
 		this.date = date;
@@ -149,6 +162,7 @@ public class Requete implements Serializable {
 		this.date_image = date_image;
 		this.dims = dims;
 		this.id_databasee = id_databasee;
+		this.name_database = name_database ; 
 		this.kpi = id_kpii;
 	}
 
@@ -196,6 +210,11 @@ public class Requete implements Serializable {
 				return false;
 		} else if (!id_databasee.equals(other.id_databasee))
 			return false;
+		if (name_database == null) {
+			if (other.name_database != null)
+				return false;
+		} else if (!name_database.equals(other.name_database))
+			return false;
 		if (kpi == null) {
 			if (other.kpi != null)
 				return false;
@@ -222,7 +241,7 @@ public class Requete implements Serializable {
 	public String toString() {
 		return "Requete [id=" + id + ", code_requete=" + code_requete + ", date=" + date + ", val_kpi=" + val_kpi
 				+ ", val_kpi_alias=" + val_kpi_alias + ", copr=" + copr + ", date_image=" + date_image + ", dims="
-				+ dims + ", id_databasee=" + id_databasee + ", id_kpii=" + kpi + "]";
+				+ dims + ", id_databasee=" + id_databasee + ", id_kpii=" + kpi +", name_database=" + name_database + "]";
 	}
 	
 

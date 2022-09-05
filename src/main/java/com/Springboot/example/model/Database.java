@@ -29,9 +29,10 @@ public class Database implements Serializable{
 	public int port ;
 	@Column(name="url")
 	public String url;
-	@Column(name="system")
+	@Column(name="system")	
 	public String system;
     @OneToMany(mappedBy="id_databasee",cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+ 
 	 private List<Requete> requetes = new ArrayList<Requete>();
 
 	
@@ -123,6 +124,10 @@ public class Database implements Serializable{
 	}
 	public void setRequetes(List<Requete> requetes) {
 		this.requetes = requetes;
+	}
+	public String getName_database() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

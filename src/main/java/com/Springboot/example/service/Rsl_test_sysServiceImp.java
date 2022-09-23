@@ -206,19 +206,19 @@ public class Rsl_test_sysServiceImp implements Rsl_test_sysService {
 	@Transactional
 	@Override
 	public void InsertOrUpdate(Rsl_test_sys r) {
-		em.createNativeQuery("INSERT into rsl_test_sys \n" +
-				"(date,idkpi,system,valeur_dim,val_kpi,id_kpi)\n" +
-				"VALUES\n" +
-				"(?,?,?,?,?,?)\n") 
+//		em.createNativeQuery("INSERT into rsl_test_sys \n" +
+//				"(date,idkpi,system,valeur_dim,val_kpi,id_kpi)\n" +
+//				"VALUES\n" +
+//				"(?,?,?,?,?,?)\n") 
 				//"ON CONFLICT  (date,idkpi,system,valeur_dim)\n" +
-				//"DO update set val_kpi=excluded.val_kpi")
-				.setParameter(1,r.date)
-				.setParameter(2,r.idKpi)
-				.setParameter(3,r.systeme)
-				.setParameter(4,r.val_dim)
-				.setParameter(5,r.val_kpi)
-		        .setParameter(6,r.getKpi().id_kpi)
-				.executeUpdate()   ;
+//				//"DO update set val_kpi=excluded.val_kpi")
+//				.setParameter(1,r.date)
+//				.setParameter(2,r.idKpi)
+//				.setParameter(3,r.systeme)
+//				.setParameter(4,r.val_dim)
+//				.setParameter(5,r.val_kpi)
+//		        .setParameter(6,r.getKpi().id_kpi)
+//				.executeUpdate()   ;
 	}
 
 

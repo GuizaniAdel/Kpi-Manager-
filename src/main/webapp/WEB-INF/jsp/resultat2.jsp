@@ -196,7 +196,7 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                   <div class="x_content">
                   
                   <h2>Download Data File</h2>
-                  <form id="demo-form2" data-parsley-validate="" method="get" action ="Vue_detaille" class="form-horizontal form-label-left"   >
+                  <form id="demo-form2" data-parsley-validate="" method="get" action ="resultat2" class="form-horizontal form-label-left"   >
 
             <div class="row">
                           <div class="col-sm-12">
@@ -412,6 +412,7 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
             ]
         } );
     } );
+  
 
     </script>
 </body>

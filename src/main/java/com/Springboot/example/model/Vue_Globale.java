@@ -17,8 +17,8 @@ public class Vue_Globale {
 	public String Date ;
 	public Long Code_requete;
 
-	public Long val_kpi1 ;
-	public Long val_kpi2 ;
+	public float val_kpi1 ;
+	public float val_kpi2 ;
 	public String load1;
 	public String load2;
 	public String name_kpi ;
@@ -40,8 +40,8 @@ public class Vue_Globale {
 	public Float seuil_dataQuality;
 	@Column(name = "acceptation")
 	public String acceptation;
-	private String DateDeb;
-	private String DateFin;
+	private String DateDeb ;
+	private String DateFin ;
 
 
 
@@ -120,7 +120,7 @@ public class Vue_Globale {
 		DateFin = datefin;
 	}
 	public String getDateDeb() {
-		return Date;
+		return DateDeb;
 	}
 	public void setDateDeb(String datedeb) {
 		DateDeb = datedeb;
@@ -132,16 +132,16 @@ public class Vue_Globale {
 		Code_requete = code_requete;
 	}
 
-	public Long getVal_kpi1() {
+	public float getVal_kpi1() {
 		return val_kpi1;
 	}
-	public void setVal_kpi1(Long val_kpi1) {
-		this.val_kpi1 = val_kpi1;
+	public void setVal_kpi1(float f) {
+		this.val_kpi1 = f;
 	}
-	public Long getVal_kpi2() {
+	public float getVal_kpi2() {
 		return val_kpi2;
 	}
-	public void setVal_kpi2(Long val_kpi2) {
+	public void setVal_kpi2(float val_kpi2) {
 		this.val_kpi2 = val_kpi2;
 	}
 	public String getLoad1() {

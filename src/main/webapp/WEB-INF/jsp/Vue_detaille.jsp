@@ -191,28 +191,31 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
+         
 
                       <button class="btn btn-primary" onclick="rtn()"><i class="fa fa-angle-double-left"></i></button>
                   <form id="demo-form2" data-parsley-validate="" method="POST" class="form-horizontal form-label-left"   >
 
-            
+             
+                  <h2>Download Data File</h2>
+                  <form id="demo-form2" data-parsley-validate="" method="get" action ="Vue_detaille" class="form-horizontal form-label-left"   >
 
                   
                  
                        <table id="datatable" class="table table-striped table-bordered" style="width:100%">
                       <thead>
 
-                        
-                          <th >Code_requete</th>
-                          <th>Date</th>
-                          <th>Name_kpi</th>
-                          <th>Dimension</th>
-                          <th>Value DB1</th>
-                          <th>Value DB2</th>
-                          <th>GAP</th>
-                            <th> Flag OK</th>
-                          <th> Flag Not OK</th>
-                          
+                        <tr>
+                          <td >Code_requete</td>
+                          <td>Date</td>
+                          <td>Name_kpi</td>
+                          <td>Dimension</td>
+                          <td>Value DB1</td>
+                          <td>Value DB2</td>
+                          <td>GAP</td>
+                            <td> Flag OK</td>
+                          <td> Flag Not OK</td>
+                          </tr>
                           
                        
 
@@ -242,7 +245,9 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                   
 
                
-                          
+                          <center>
+                              <button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportF();"> Vue Global</button>	
+                  </center>  
                         
 
                     </form>
@@ -253,7 +258,7 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                   </div>
                   </div>
                   </div>
-                  
+                
                   </div>
                   </div>
                  
@@ -315,6 +320,7 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
 
  <script src="<c:url value="/resources/vendors/pdfmake/build/pdfmake.min.js"/>"></script>
  <script src="<c:url value="/resources/vendors/pdfmake/build/vfs_fonts.js"/>"></script>
+ 
     <!-- jQuery Smart Wizard -->
 
      <script src="<c:url value="/resources/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"/>"></script>
@@ -326,6 +332,92 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
     <script src="<c:url value="/resources/build/js/custom.min.js"/>"></script>
     <!-- iCheck 1.0.1 -->
 <script src="https://almsaeedstudio.com/themes/AdminLTE/plugins/iCheck/icheck.min.js"></script>
+
+
+
+ <script type="text/javascript">
+  function disableUsedOptions($table) {
+	  $selects = $table.find("select");
+	  $selects.on("change", function() {
+	    $selects = $table.find("select");
+
+	    console.log("In table:");
+	    console.log($table);
+	    console.log("there are " + $selects.length + " selects");
+	    if ($selects.length <= 1) return;
+	    let selected = [];
+	    
+	    $selects.each(function(index, select) {
+	      if (select.value !== "") {
+	        selected.push(select.value);
+	      }
+	    });
+
+	    console.log("option values, that are being deactivated: " + selected);
+
+	    $table.find("option").prop("disabled", false);
+	    for (var index in selected) {
+	     $table
+	                .find('option[value="' + selected[index] + '"]:not(:selected)')
+	                .prop("disabled", true);
+	    }
+	  });
+	  $selects.trigger("change");
+	}
+
+	$tables = $("body");
+	$tables.each(function(index) {
+	  $table = $(this);
+	  disableUsedOptions($table);
+	});
+	function afficher_pop(){
+		document.getElementById('a').hidden = false;
+		
+	}
+	function generateReportD(){
+		   document.forms['demo-form2'].action = 'resultat2';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportA(){
+		   document.forms['demo-form2'].action = ' resultat200';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportB(){
+		   document.forms['demo-form2'].action = ' resultat20';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportX(){
+		   document.forms['demo-form2'].action = ' deletekpi';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportZ(){
+		   document.forms['demo-form2'].action = ' Vue_Global';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportY(){
+		   document.forms['demo-form2'].action = ' Vue_detaille';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportH(){
+		   document.forms['demo-form2'].action = ' deletevd';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportF(){
+		   document.forms['demo-form2'].action = ' Vue_Globale';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+  </script>
+
+
+
  <script src="<c:url value="/resources/js/tablefilter.js"/>"></script>
 
 
@@ -355,6 +447,21 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
              function rtn() {
                  window.history.back();
              }
+             var tf = new TableFilter('resultat2', filtersConfig);
+             tf.init();
+             
+             $(document).ready(function() {
+                 $('#resultat2').DataTable( {
+                     dom: 'Bfrtip',
+                     buttons: [
+                         
+                         'excelHtml5',PDF,
+                         
+                        
+                     ]
+                 } );
+             } );
+        
     </script>
 </body>
 </html>

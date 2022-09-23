@@ -267,8 +267,15 @@
                                
                                <% if( (request.getParameter("db1")!=null) && (request.getParameter("db2")!=null)) {
                             	   %>
-                       
-                        <h5>===== Database 1 : <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%> =================== Database 2 : <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%>===============</h5>   
+                       <table>
+                       <tr>
+                       <td><div1> <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Database 1 : <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></h5></div></td>
+                     	
+                      <td><div2> <h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Database 2 : <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%> </h5></div></td>
+                     </tr>
+                         </table>
+                         
+                         
                          
                         <% 
                         } 
@@ -353,15 +360,17 @@
                       <div class="ln_solid"></div>
                       <div class="item form-group">
                         <div class="col-md-6 col-sm-6 offset-md-3">
-                       		 <button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportX();"> Clean Test Data</button>
-          			 		<button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportH();"> Clean Vue Details Data</button>	
+<!--                        		 <button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportX();"> Clean Test Data</button> -->
+<!--           			 		<button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportH();"> Clean Vue Details Data</button>	 -->
                           <button class="btn btn-primary" type="button" onclick="generateReportB();" >Load DB 1</button>
 						  <button class="btn btn-primary" type="reset"  onclick="generateReportA();" >Load DB 2</button>
+						  <div>		
                          <button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportD();"> Load data from two databases</button>
-          				
-          		
+          			 	
           			 		  <button class="btn btn-primary" type="reset"  onclick="generateReportY();" >Vue Details</button>
- 					<button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportZ();"> Vue Global</button>				
+ 					<button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportZ();"> Vue Global</button>	
+ 					<button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportO();"> All Data</button>				
+                        </div>
                         </div>
                       </div>
                       
@@ -563,6 +572,11 @@
 		}
 	function generateReportH(){
 		   document.forms['demo-form2'].action = ' deletevd';
+		   document.forms['demo-form2'].submit();
+		  
+		}
+	function generateReportO(){
+		   document.forms['demo-form2'].action = ' LoadAllData';
 		   document.forms['demo-form2'].submit();
 		  
 		}

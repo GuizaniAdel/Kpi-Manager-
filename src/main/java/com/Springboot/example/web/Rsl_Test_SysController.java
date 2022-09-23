@@ -2,6 +2,8 @@ package com.Springboot.example.web;
 
 import com.Springboot.example.model.*;
 import com.Springboot.example.repository.*;
+import com.Springboot.example.service.Database1Service;
+import com.Springboot.example.service.Database2Service;
 import com.Springboot.example.service.Rsl_test_sysService;
 import com.Springboot.example.service.Rsl_test_sysServiceImp;
 import com.Springboot.example.service.VueDetailSevice;
@@ -31,8 +33,16 @@ import java.util.List;
 
 @Controller
 @EnableScheduling
+// @RestController  // Ajoutant l'annotation restcontroller pour cree les API Rest en les consommant apartir du front 
 public class Rsl_Test_SysController {
-
+	@Autowired
+	Database1Service database1Service;
+	@Autowired
+	Database2Service database2Service;
+	@Autowired
+	private Database1Repository database1repository;
+	@Autowired
+	private Database2Repository database2repository;
 	@Autowired
 	private Vue_DetailsRepository vue_detailsRepository;
 	@Autowired
@@ -40,7 +50,7 @@ public class Rsl_Test_SysController {
 	@Autowired
 	private KpiRepository kpirepository;
 	@Autowired
-	Rsl_test_sysService rsltService;
+	private Rsl_test_sysService rsltService;
 	@Autowired
 	public VueDetailSevice vueDetailSevice;
 
@@ -258,7 +268,7 @@ public class Rsl_Test_SysController {
 
 		}
 
-		List<Vue_Globale> rslt2 = new ArrayList<Vue_Globale>();
+//		List<Vue_Globale> rslt2 = new ArrayList<Vue_Globale>();
 		for (String s : kpis) {
 			long kpi = Long.parseLong(s);
 			Kpi k = kpirepository.findById(kpi).get();
@@ -267,7 +277,7 @@ public class Rsl_Test_SysController {
 			Connection conn = null;
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
-
+			
 
 		
 
@@ -463,7 +473,7 @@ public class Rsl_Test_SysController {
 
 			}
 
-			List<Vue_Globale> rslt2 = new ArrayList<Vue_Globale>();
+//			List<Vue_Globale> rslt2 = new ArrayList<Vue_Globale>();
 			for (String s : kpis) {
 				long kpi = Long.parseLong(s);
 				Kpi k = kpirepository.findById(kpi).get();
@@ -479,8 +489,7 @@ public class Rsl_Test_SysController {
 				
 
 				PreparedStatement ps0 = conn.prepareStatement("delete from vue_detaille where code_requete= " + k.getId_kpi() + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
-				int rs0 = ps0.executeUpdate();
-//			
+				int rs0 = ps0.executeUpdate();	
 
 		
 		
@@ -600,12 +609,12 @@ public class Rsl_Test_SysController {
 								System.out.println("no4");
 								System.out.println(dimension);
 								System.out.println("Select " + date + " as date, "
-										+ k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + name_db + " as dbname, " + val_kpi
+										+ k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, "  + val_kpi
 										+ " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb
 										+ "' and '" + dateFin + "' group by " + date + " ," + dimension);
 
 								PreparedStatement ps = conn.prepareStatement("Select " + date + " as date, "
-										+ k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + name_db + " as dbname, " + val_kpi
+										+ k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, "  + val_kpi
 										+ " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb
 										+ "' and '" + dateFin + "' group by " + date + " ," + dimension);
 								ResultSet rs = ps.executeQuery();
@@ -671,7 +680,7 @@ public class Rsl_Test_SysController {
 
 		}
 
-		List<Vue_Globale> rslt2 = new ArrayList<Vue_Globale>();
+//		List<Vue_Globale> rslt2 = new ArrayList<Vue_Globale>();
 		for (String s : kpis) {
 			long kpi = Long.parseLong(s);
 			Kpi k = kpirepository.findById(kpi).get();
@@ -747,14 +756,14 @@ public class Rsl_Test_SysController {
 
 			// requete pour afficher Nbre d'enregistrement existe dans db2 et NON dans db1
 
-			PreparedStatement ps4 = conn.prepareStatement("select T2.date,sum(T2.nbre) as load2 from\n"
-					+ "(select a.idkpi, count(a.valeur_dim) as Nbre,a.date from rsl_test_sys a \n" + "where a.idkpi="
-					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
-					+ d2.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim\n" + "except all\n"
-					+ "select a.idkpi, count(a.valeur_dim) as nbre,a.date from rsl_test_sys a \n" + "where a.idkpi="
-					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
-					+ d1.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim) as T2 \n"
-					+ "group by T2.date \n" + "order by T2.date ");
+//			PreparedStatement ps4 = conn.prepareStatement("select T2.date,sum(T2.nbre) as load2 from\n"
+//					+ "(select a.idkpi, count(a.valeur_dim) as Nbre,a.date from rsl_test_sys a \n" + "where a.idkpi="
+//					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
+//					+ d2.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim\n" + "except all\n"
+//					+ "select a.idkpi, count(a.valeur_dim) as nbre,a.date from rsl_test_sys a \n" + "where a.idkpi="
+//					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
+//					+ d1.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim) as T2 \n"
+//					+ "group by T2.date \n" + "order by T2.date ");
 
 			/*
 			 * PreparedStatement ps5 = conn.
@@ -790,9 +799,9 @@ public class Rsl_Test_SysController {
 
 			ResultSet rs = ps.executeQuery();
 
-			PreparedStatement ps1 = conn.prepareStatement(
-					"select  valeur_dim as mix from rsl_test_sys where valeur_dim = (select max(valeur_dim) from rsl_test_sys)");
-			ResultSet rs1 = ps1.executeQuery();
+//			PreparedStatement ps1 = conn.prepareStatement(
+//					"select  valeur_dim as mix from rsl_test_sys where valeur_dim = (select max(valeur_dim) from rsl_test_sys)");
+//			ResultSet rs1 = ps1.executeQuery();
 
 			long startTime = System.currentTimeMillis();
 
@@ -802,7 +811,7 @@ public class Rsl_Test_SysController {
 
 			// ResultSet rs3 = ps3.executeQuery();
 
-			ResultSet rs4 = ps4.executeQuery();
+//			ResultSet rs4 = ps4.executeQuery();
 			long startTime2 = System.currentTimeMillis();
 
 			// ResultSet rs5 = ps5.executeQuery();
@@ -813,70 +822,70 @@ public class Rsl_Test_SysController {
 
 			while (rs.next()) {
 				System.out.println("pap");
-
-				Vue_Globale blog = new Vue_Globale();
-				blog.setDate(rs.getString("Date"));
-				blog.setCode_requete(rs.getLong("Code_requete"));
-				blog.setVal_kpi1(rs.getLong("val3"));
-				blog.setVal_kpi2(rs.getLong("val4"));
-				 blog.setName_kpi(rs.getString("name"));
-				 blog.setVal_dim(rs.getString("dim"));
+//
+//				Vue_Globale blog = new Vue_Globale();
+//				blog.setDate(rs.getString("Date"));
+//				blog.setCode_requete(rs.getLong("Code_requete"));
+//				blog.setVal_kpi1(rs.getLong("val3"));
+//				blog.setVal_kpi2(rs.getLong("val4"));
+//				 blog.setName_kpi(rs.getString("name"));
+//				 blog.setVal_dim(rs.getString("dim"));
 //                blog.setLoad2(rs.getString("val2"));
-
-				// probleme au niveau de nbreRecordOk si on a un seul enregistrement //
-				// Heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeere
-
-				// blog.setNbreRecordOk(rs.getInt("nbreRecordOK"));
-				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-				Date dateobj = new Date();
-				blog.dateExec = (dfff.format(dateobj));
-				java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
-				blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
-
-//                
-//                int  j = rs1.getInt("mix");
-//                   blog.setNbreRecordNotOk(rs.getInt("nbreRecordNotOk")+ j);
-				int i = 0;
-				int j = 0;
-
-                if (rs.getInt("gap") > k.getSeuil_gap()) {
-                	i = i+1 ;
-            	blog.setNbreRecordNotOk(rs.getInt("nbreRecordNotOk") + i);}
-
-				if (rs.getInt("gap") < k.getSeuil_gap()) {
-					j = j + 1;
-					
-			
-				
-				
-					blog.setNbreRecordOk(rs.getInt("nbreRecordOk") + j);
-				}
-
-				// blog.setFoundDB1(rs.getInt("load1"));
-//                blog.setFoundDB2(rs.getInt("load2"));
-				blog.setGap((long) rs.getInt("gap"));
-				java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
-				BigDecimal bigD = new BigDecimal(
-						(rs.getInt("gap") * 100) / (Math.max(rs.getDouble("val4"), rs.getDouble("val3"))));
-				blog.setGAP_par_100(dff.format(bigD));
-//				if (rs.getInt("gap") < 1400) {// (Math.max(rs.getDouble("val4"), rs.getDouble("val3"))) == 0) &&
-//												// (rs.getDouble("nbreRecordOk") / Math.max(rs.getDouble("val1"),
-//												// rs.getDouble("val2"))) * 100F == 100.0) {
-//					blog.setAcceptation("OK");
-//				} else if (rs.getInt("gap") > 1400 && rs.getInt("gap") < 2400) {
-//					blog.setAcceptation("OK partiel");
+//
+//				// probleme au niveau de nbreRecordOk si on a un seul enregistrement //
+//				// Heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeere
+//
+//				// blog.setNbreRecordOk(rs.getInt("nbreRecordOK"));
+//				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+//				Date dateobj = new Date();
+//				blog.dateExec = (dfff.format(dateobj));
+//				java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
+//				blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
+//
+////                
+////                int  j = rs1.getInt("mix");
+////                   blog.setNbreRecordNotOk(rs.getInt("nbreRecordNotOk")+ j);
+//				int i = 0;
+//				int j = 0;
+//
+//                if (rs.getInt("gap") > k.getSeuil_gap()) {
+//                	i = i+1 ;
+//            	blog.setNbreRecordNotOk(rs.getInt("nbreRecordNotOk") + i);}
+//
+//				if (rs.getInt("gap") < k.getSeuil_gap()) {
+//					j = j + 1;
+//					
+//			
+//				
+//				
+//					blog.setNbreRecordOk(rs.getInt("nbreRecordOk") + j);
 //				}
 //
-////                } else if (k.getSeuil_dataQuality() < (rs.getDouble("nbreRecordOk") / Math.max(rs.getDouble("val1"), rs.getDouble("val2"))) * 100F
-////                        && k.getSeuil_gap() > (rs.getInt("gap") * 100) / (Math.max(rs.getDouble("val4"), rs.getDouble("val3")))) {
-////                    blog.setAcceptation("OK partiel");
-//				else {
-//					blog.setAcceptation("NotOk"); // This One !
-//				}
-
-				rslt2.add(blog);
-
-			}
+//				// blog.setFoundDB1(rs.getInt("load1"));
+////                blog.setFoundDB2(rs.getInt("load2"));
+//				blog.setGap((long) rs.getInt("gap"));
+//				java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
+//				BigDecimal bigD = new BigDecimal(
+//						(rs.getInt("gap") * 100) / (Math.max(rs.getDouble("val4"), rs.getDouble("val3"))));
+//				blog.setGAP_par_100(dff.format(bigD));
+////				if (rs.getInt("gap") < 1400) {// (Math.max(rs.getDouble("val4"), rs.getDouble("val3"))) == 0) &&
+////												// (rs.getDouble("nbreRecordOk") / Math.max(rs.getDouble("val1"),
+////												// rs.getDouble("val2"))) * 100F == 100.0) {
+////					blog.setAcceptation("OK");
+////				} else if (rs.getInt("gap") > 1400 && rs.getInt("gap") < 2400) {
+////					blog.setAcceptation("OK partiel");
+////				}
+////
+//////                } else if (k.getSeuil_dataQuality() < (rs.getDouble("nbreRecordOk") / Math.max(rs.getDouble("val1"), rs.getDouble("val2"))) * 100F
+//////                        && k.getSeuil_gap() > (rs.getInt("gap") * 100) / (Math.max(rs.getDouble("val4"), rs.getDouble("val3")))) {
+//////                    blog.setAcceptation("OK partiel");
+////				else {
+////					blog.setAcceptation("NotOk"); // This One !
+////				}
+//
+//				rslt2.add(blog);
+//
+//			}
 
 		}
 		/*
@@ -922,10 +931,10 @@ public class Rsl_Test_SysController {
 		 * }
 		 */
 		
-		for (Vue_Globale r : rslt2) {
-			rslRepository.save(r);
+//		for (Vue_Globale r : rslt2) {
+//			rslRepository.save(r);
 		}
-		model.addAttribute("rslt", rslt2);
+//		model.addAttribute("rslt", rslt2);
 
 		return "resultat2";
 
@@ -1265,7 +1274,9 @@ public class Rsl_Test_SysController {
 	// }
 	// TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO HERE
 	@RequestMapping(value = "/Vue_Global", method = RequestMethod.GET)
-	public String Getres15(Model model, @RequestParam("kpiii") String[] kpis, @RequestParam("DateDeb") String dateDeb,
+	public String Getres15(Model model
+			,
+			@RequestParam("kpiii") String[] kpis, @RequestParam("DateDeb") String dateDeb,
 			@RequestParam("DateFin") String dateFin // , @RequestParam("PlanTask") String PlanTask //here
 			, @RequestParam("db1") long db1, @RequestParam("db2") Long db2) throws Exception {
 		// LocalDate localDate = LocalDate.now();
@@ -1414,7 +1425,7 @@ public class Rsl_Test_SysController {
             r.setKpi(kpirepository.findById((long) rs.getIdKpi()).get());
             rsltService.InsertOrUpdate(r);
         }
-	 List<Vue_Globale> rslt2 = new ArrayList<Vue_Globale>();
+//	 List<Vue_Globale> rslt2 = new ArrayList<Vue_Globale>();
         for (String s : kpis) {
             long kpi = Long.parseLong(s);
             Kpi k = kpirepository.findById(kpi).get();
@@ -1444,75 +1455,75 @@ public class Rsl_Test_SysController {
                 System.out.println("pap");
 
 
-                Vue_Globale blog = new Vue_Globale();
-                System.out.println(dateDeb);
-                blog.setDateDeb(dateDeb);
-                blog.setDateFin(dateFin);
-                blog.setDate(rs.getString("Date"));
-                blog.setCode_requete(rs.getLong("Code_requete"));
-                blog.setVal_kpi1(rs3.getLong("val3"));
-                blog.setVal_kpi2(rs3.getLong("val4"));
-                blog.setName_kpi(rs.getString("name"));
-                blog.setSeuil_dataQuality(rs4.getFloat("seuil_dataQuality"));
-                blog.setSeuil(rs4.getFloat("seuil"));
-                blog.setSeuil_gap(rs4.getFloat("seuil_gap"));
-//                blog.setLoad1(rs.getString("val1"));
-//                blog.setLoad2(rs.getString("val2"));
-                //probleme au niveau de nbreRecordOk si on a un seul enregistrement
-                blog.setNbreRecordOk(rs1.getInt("nbreRecordOK"));
-                DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-                Date dateobj = new Date();
-                blog.dateExec = (dfff.format(dateobj));
-                java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
-                blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
-             
-                blog.setNbreRecordNotOk(rs2.getInt("nbreRecordNotOk"));
-       
-                blog.setDataQualite((rs1.getInt("nbreRecordOk"))*100f /  ((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk"))));
-                
-            
-//                System.out.println((rs1.getInt("nbreRecordOK") / (Math.addExact(rs1.getInt("nbreRecordOk"), rs2.getInt("nbreRecordNotOk"))) )*100000);
-//                System.out.println((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk")));
-//                System.out.println((rs1.getInt("nbreRecordOk"))*100 /  ((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk"))));
-                System.out.println(rs);
-//                System.out.println((rs.getDouble("nbreRecordOk") / Math.max(rs.getDouble("val1"), rs.getDouble("val2"))) * 100F);
-//                blog.setDataQualite(
-//                        ddf.format((rs.getDouble("nbreRecordOk") / Math.max(rs.getDouble("val1"), rs.getDouble("val2"))) * 100F));
+//                Vue_Globale blog = new Vue_Globale();
+//                System.out.println(dateDeb);
+//                blog.setDateDeb(dateDeb);
+//                blog.setDateFin(dateFin);
+//                blog.setDate(rs.getString("Date"));
+//                blog.setCode_requete(rs.getLong("Code_requete"));
+//                blog.setVal_kpi1(rs3.getLong("val3"));
+//                blog.setVal_kpi2(rs3.getLong("val4"));
+//                blog.setName_kpi(rs.getString("name"));
+//                blog.setSeuil_dataQuality(rs4.getFloat("seuil_dataQuality"));
+//                blog.setSeuil(rs4.getFloat("seuil"));
+//                blog.setSeuil_gap(rs4.getFloat("seuil_gap"));
+////                blog.setLoad1(rs.getString("val1"));
+////                blog.setLoad2(rs.getString("val2"));
+//                //probleme au niveau de nbreRecordOk si on a un seul enregistrement
+//                blog.setNbreRecordOk(rs1.getInt("nbreRecordOK"));
+//                DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+//                Date dateobj = new Date();
+//                blog.dateExec = (dfff.format(dateobj));
+//                java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
+//                blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
+//             
+//                blog.setNbreRecordNotOk(rs2.getInt("nbreRecordNotOk"));
+//       
+//                blog.setDataQualite((rs1.getInt("nbreRecordOk"))*100f /  ((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk"))));
+//                
+//            
+////                System.out.println((rs1.getInt("nbreRecordOK") / (Math.addExact(rs1.getInt("nbreRecordOk"), rs2.getInt("nbreRecordNotOk"))) )*100000);
+////                System.out.println((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk")));
+////                System.out.println((rs1.getInt("nbreRecordOk"))*100 /  ((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk"))));
+//                System.out.println(rs);
+////                System.out.println((rs.getDouble("nbreRecordOk") / Math.max(rs.getDouble("val1"), rs.getDouble("val2"))) * 100F);
+////                blog.setDataQualite(
+////                        ddf.format((rs.getDouble("nbreRecordOk") / Math.max(rs.getDouble("val1"), rs.getDouble("val2"))) * 100F));
+//
+////                blog.setFoundDB1(rs.getInt("load1"));
+////                blog.setFoundDB2(rs.getInt("load2"));
+//            	blog.setGap((long) rs3.getInt("gap"));
+//                java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
+////                assert(Float.NaN, 0f / 0);
+//                BigDecimal bigD = new BigDecimal((rs3.getInt("gap")   / (Math.max(rs3.getDouble("val4"), rs3.getDouble("val3")))* 100f));
+//             	blog.setGAP_par_100(dff.format(bigD));
+//                System.out.println(blog.getGap());
+//                System.out.println(k.getSeuil_dataQuality());
+//                System.out.println(k.getSeuil_gap());
+//                System.out.println(k.getSeuil());
+//                System.out.println(rs3.getInt("val4"));
+//                System.out.println(rs3.getInt("val3"));
+//                if(((rs3.getInt("gap") == 0) && ((rs1.getInt("nbreRecordOk"))*100f / ( ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk")))) ==100.0f))){
+//                    blog.setAcceptation("OK");
+//                }
+//                else if(k.getSeuil_dataQuality()< ((rs1.getInt("nbreRecordOk"))*100f /  ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk"))))
+//                        && k.getSeuil_gap()>(rs3.getInt("gap") )  ){
+//                    blog.setAcceptation("OK partiel");
+//                }else{
+//                    blog.setAcceptation("NotOk");
+//                }
+//
+//                rslt2.add(blog);
+//            }
+//
+//            model.addAttribute("rslt", rslt2);
+//
+//        }
 
-//                blog.setFoundDB1(rs.getInt("load1"));
-//                blog.setFoundDB2(rs.getInt("load2"));
-            	blog.setGap((long) rs3.getInt("gap"));
-                java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
-//                assert(Float.NaN, 0f / 0);
-                BigDecimal bigD = new BigDecimal((rs3.getInt("gap")   / (Math.max(rs3.getDouble("val4"), rs3.getDouble("val3")))* 100f));
-             	blog.setGAP_par_100(dff.format(bigD));
-                System.out.println(blog.getGap());
-                System.out.println(k.getSeuil_dataQuality());
-                System.out.println(k.getSeuil_gap());
-                System.out.println(k.getSeuil());
-                System.out.println(rs3.getInt("val4"));
-                System.out.println(rs3.getInt("val3"));
-                if(((rs3.getInt("gap") == 0) && ((rs1.getInt("nbreRecordOk"))*100f / ( ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk")))) ==100.0f))){
-                    blog.setAcceptation("OK");
-                }
-                else if(k.getSeuil_dataQuality()< ((rs1.getInt("nbreRecordOk"))*100f /  ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk"))))
-                        && k.getSeuil_gap()>(rs3.getInt("gap") )  ){
-                    blog.setAcceptation("OK partiel");
-                }else{
-                    blog.setAcceptation("NotOk");
-                }
-
-                rslt2.add(blog);
-            }
-
-            model.addAttribute("rslt", rslt2);
-
+//        for (Vue_Globale r : rslt2){
+//            rslRepository.save(r);
         }
-
-        for (Vue_Globale r : rslt2){
-            rslRepository.save(r);
         }
-
 	 return "resultat3";
 
 	 }
@@ -1721,7 +1732,8 @@ public class Rsl_Test_SysController {
 //	}
 
 	@GetMapping("/Vue_detaille")
-	public String getAllRsltDetaille(Model model, @RequestParam("kpiii") String[] kpis) throws Exception {
+	public String getAllRsltDetaille(Model model, @RequestParam("kpiii") String[] kpis, @RequestParam("DateDeb") String dateDeb,
+			@RequestParam("DateFin") String dateFin) throws Exception {
 
 		List<Vue_Detaillé> rslt2 = new ArrayList<>();
 
@@ -1734,11 +1746,16 @@ public class Rsl_Test_SysController {
 
 		
 			Connection conn = null;
+
+
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
-			// requete pour afficher vue detaillé
+
+
+			PreparedStatement ps0 = conn.prepareStatement("delete from vue_detaille where code_requete= " + k.getId_kpi() + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
+			int rs0 = ps0.executeUpdate();	
 			PreparedStatement ps = conn
-					.prepareStatement("select  k.name_kpi as name ,a.idkpi  Code_requete , a.date as Date , a.valeur_dim as dim , a.val_kpi as val3  , b.val_kpi  as val4 ,0 as nbreRecordOk ,0 as nbreRecordNotOk,abs(a.val_kpi - b.val_kpi) as gap from database1 a   \r\n"
+					.prepareStatement("select  k.name_kpi as name ,a.idkpi  Code_requete , a.date as Date , a.valeur_dim as dim , COALESCE(a.val_kpi,0) as val3  , COALESCE(b.val_kpi,0)  as val4 ,0 as nbreRecordOk ,0 as nbreRecordNotOk,abs(COALESCE(a.val_kpi,0) - COALESCE(b.val_kpi,0)) as gap from database1 a   \r\n"
 							+"Full outer join database2 b  on  a.id_kpi = b.id_kpi and a.valeur_dim = b.valeur_dim and a.date = b.date\r\n"
 							+"left outer join kpi k on k.id_kpi=a.id_kpi \r\n"
 							+"where a.id_kpi =" +k.id_kpi+" \r\n");
@@ -1747,10 +1764,10 @@ public class Rsl_Test_SysController {
 				Vue_Detaillé blog = new Vue_Detaillé();
 				blog.setDate(rs.getString("Date"));
 				blog.setCode_requete(rs.getLong("Code_requete"));
-				blog.setVal_kpi1(rs.getLong("val3"));
-				blog.setVal_kpi2(rs.getLong("val4"));
+				blog.setVal_kpi1(rs.getFloat("val3"));
+				blog.setVal_kpi2(rs.getFloat("val4"));
 				 blog.setName_kpi(rs.getString("name"));
-				 blog.setVal_dim(rs.getString("dim"));
+				 blog.setVal_dim(rs.getString("dim"));	
 				 
 				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 				Date dateobj = new Date();
@@ -1780,7 +1797,7 @@ public class Rsl_Test_SysController {
 			
 			
             
-				blog.setGap((long) rs.getInt("gap"));
+				blog.setGap(rs.getFloat("gap"));
 				java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
 				BigDecimal bigD = new BigDecimal(
 						(rs.getInt("gap") * 100) / (Math.max(rs.getDouble("val4"), rs.getDouble("val3"))));
@@ -1800,4 +1817,1312 @@ public class Rsl_Test_SysController {
 		return "Vue_detaille";
 	}
 
-}
+	
+//----------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------
+	
+	
+	
+	@RequestMapping(value = "/Vue_Globale", method = RequestMethod.GET)
+	public String Getres1574(Model model
+			
+			
+			, @RequestParam("db1") long db1, @RequestParam("db2") Long db2) throws Exception {
+		// LocalDate localDate = LocalDate.now();
+		// while (new SimpleDateFormat("yyy-MM-dd").parse(PlanTask).equals(localDate)) ;
+		
+		Database d1 = dbrepository.findDatabaseById(db1);
+		Database d2 = dbrepository.findDatabaseById(db2);
+
+        List<Rsl_test_sys> rslt = new ArrayList<Rsl_test_sys>();
+//        String[] kpis= null;
+//		for (String s : kpis) {
+//            long kpi = Long.parseLong(s);
+//            Kpi k = kpirepository.findById(kpi).get();
+//
+//            Requete r1 = new Requete();
+//            for (Requete r : k.getRequetess()) {
+//                if (r1 != r) {
+//                    r1 = r;
+//
+//                    if (dbrepository.findDatabaseById(db1).equals(r.getId_databasee())){  //HEEEEEEEEEEEEEEEEEEEEERE !
+//
+//                        if (r.getId_databasee().getSystem().equals("SqlServer")) {
+//
+//
+//                        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//
+//                        Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + r.getId_databasee().getPort() +
+//                                        ";databaseName=" + r.getId_databasee().getName()
+//                                , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+//
+//                        String date = r.getDate();
+//                        String copr = r.getCopr();
+//                        String val_kpi = r.val_kpi;
+//                        String alias_val_kpi = r.val_kpi_alias;
+//
+//
+//
+//                        List<Dimension> dimss = r.getDims();
+//                        String dimension = " ";
+//                        for (Dimension d : dimss) {
+//                            if (d == dimss.get(dimss.size() - 1)) {
+//                                dimension = dimension + d.getVal_dim();
+//                            } else {
+//                                dimension = dimension + d.getVal_dim() + " +'|'+ ";
+//                            }
+//                        }
+////                        System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb + "' and " + dateFin + " group by " + date + " ," + dimension);
+//
+////                        PreparedStatement ps = con.prepareStatement("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by " + date + " ," + dimension);
+////                        ResultSet rs = ps.executeQuery();
+////
+////                        while (rs.next()) {
+////                            Rsl_test_sys blog = new Rsl_test_sys();
+////                            blog.setDate(rs.getString("date"));
+////                            blog.setIdKpi(rs.getFloat("Code_requete"));
+////                            blog.setVal_dim(rs.getString("val_dim"));
+////                            blog.setVal_kpi(rs.getFloat(alias_val_kpi));
+////                            blog.setSysteme("SqlServer");
+////                            System.out.println("hetha  tee sqlserver"+blog);
+////                            rslt.add(blog);
+////                        }
+//
+//                      con.close();
+//                    } else if (r.getId_databasee().getSystem().equals("Postgres")) {
+//
+//
+//                        try {
+//                            Connection conn = null;
+//                            Class.forName("org.postgresql.Driver");
+//                            conn = DriverManager.getConnection("jdbc:postgresql://localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName()
+//                                    , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+//
+//                            String date = r.getDate();
+//                            String copr = r.getCopr();
+//                            String val_kpi = r.val_kpi;
+//                            String alias_val_kpi = r.val_kpi_alias;
+//
+//
+//
+//
+//
+//                            List<Dimension> dimss = r.getDims();
+//                            String dimension = " ";
+//                            for (Dimension d : dimss) {
+//                                if (d == dimss.get(dimss.size() - 1)) {
+//                                    dimension = dimension + d.getVal_dim();
+//                                } else {
+//                                    dimension = dimension + d.getVal_dim() + " ||'|'|| ";
+//                                }
+//                            }
+////                            System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb + "' and " + dateFin + " group by " + date + " ," + dimension);
+//
+////                            PreparedStatement ps = conn.prepareStatement("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by " + date + " ," + dimension);
+////                            ResultSet rs = ps.executeQuery();
+//
+////                            while (rs.next()) {
+////                                Rsl_test_sys blog = new Rsl_test_sys();
+////                                blog.setDate(rs.getString("date"));
+////                                blog.setIdKpi(rs.getFloat("Code_requete"));
+////                                blog.setVal_dim(rs.getString("val_dim"));
+////                                blog.setVal_kpi(rs.getFloat(alias_val_kpi));
+////                                blog.setSysteme("Postgres");
+////                                System.out.println("hetha  tee post"+blog);
+////                                rslt.add(blog);
+////                            }
+//
+//                           conn.close();
+//                        } catch (Exception e) {
+//                            System.out.println("Failed to create JDBC dateDeb connection " + e.toString() + e.getMessage());
+//                        }
+//                    } else if (r.getId_databasee().getSystem().equals("Oracle"))
+//                        try {
+//
+//                            Class.forName("oracle.jdbc.OracleDriver");
+//                            String url = "jdbc:oracle:thin:@localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName()
+//                                    + r.getId_databasee().getUsername() + r.getId_databasee().getPassword();
+//                            System.out.println();
+//                            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName()
+//                                    , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+//
+//
+//                        } catch (Exception e) {
+//                            System.out.println("Failed to create JDBC dateDeb connection " + e.getMessage());
+//                        }
+//                    else {
+//
+//                        System.out.println("no connexions");
+//                    }
+//
+//                }}
+//            }
+//        }
+        System.out.println(rslt.size());
+        for (Rsl_test_sys rs : rslt){
+
+            Rsl_test_sys r= new Rsl_test_sys();
+            r.setDate(rs.getDate());
+            r.setIdKpi(rs.getIdKpi());
+            r.setVal_dim(rs.getVal_dim());
+            r.setVal_kpi(rs.getVal_kpi());
+            r.setSysteme(rs.getSysteme());
+            r.setKpi(kpirepository.findById((long) rs.getIdKpi()).get());
+            rsltService.InsertOrUpdate(r);
+        }
+	 List<Vue_Globale> rslt2 = new ArrayList<Vue_Globale>();
+      
+    
+  
+            Connection conn = null;
+            Class.forName("org.postgresql.Driver");
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4"
+                    , "postgres", "root");
+//            PreparedStatement ps = conn.prepareStatement("select  k.name_kpi as name ,a.idkpi  Code_requete , a.date as Date , a.valeur_dim as dim , a.val_kpi as val3  , b.val_kpi  as val4 ,0 as nbreRecordOk ,0 as nbreRecordNotOk,abs(a.val_kpi - b.val_kpi) as gap from database1 a   \r\n"
+//					+"Full outer join database2 b  on  a.id_kpi = b.id_kpi and a.valeur_dim = b.valeur_dim and a.date = b.date\r\n"
+//					+"left outer join kpi k on a.id_kpi="+k.id_kpi+" \r\n"
+//					+"where a.id_kpi = k.id_kpi \r\n");
+
+            long startTime = System.currentTimeMillis();
+//
+//            ResultSet rs = ps.executeQuery();
+            PreparedStatement ps1 = conn.prepareStatement("Select count(*) as nbreRecordOK from vue_detaille where nbre_record_ok = 1");
+            ResultSet rs1 = ps1.executeQuery();
+            PreparedStatement ps2 = conn.prepareStatement("Select count(*) as nbreRecordNotOk from vue_detaille where nbre_record_not_ok = 1");
+            ResultSet rs2 = ps2.executeQuery();
+	            PreparedStatement ps3 = conn.prepareStatement("Select sum(val_kpi1) as val3 ,sum(val_kpi2) as val4 ,abs(sum(val_kpi1)- sum(val_kpi2)) as gap from vue_detaille ");
+            ResultSet rs3 = ps3.executeQuery();
+//            PreparedStatement ps4 = conn.prepareStatement("select seuil as seuil , seuil_gap as seuil_gap , seuil_data_quality as seuil_dataQuality from  kpi  where id_kpi="+k.id_kpi +"" );
+//            ResultSet rs4 = ps4.executeQuery();	
+            PreparedStatement ps5 = conn.prepareStatement("select min(date) as datedeb , max(date) as datefin from vue_detaille" );
+            ResultSet rs5 = ps5.executeQuery();
+            PreparedStatement ps6 = conn.prepareStatement("select code_requete as Code_requete , name_kpi as name from vue_detaille" );
+            ResultSet rs6 = ps6.executeQuery();
+            PreparedStatement ps7 = conn.prepareStatement
+            		("  	select  code_requete as Code_requete , name_kpi as name   ,\r\n"
+            		+ "		sum(case when nbre_record_ok = 1 then 1 else 0 end) as nbreRecordOK,\r\n"
+            		+ "     sum(case when nbre_record_not_ok = 1 then 1 else 0 end) as nbreRecordNotOk,\r\n"
+            		+ "	    sum(val_kpi1) as val3,\r\n"
+            		+ "	    sum(val_kpi2) as val4,\r\n"
+            		+ "	    sum(gap) as gap,\r\n"
+            		+ "	    sum(CAST(gap_par_100 as float)) as gaptot\r\n"
+            		+ "     \r\n"
+            		+ "		from vue_detaille\r\n"
+            		+ "		group by name_kpi  , code_requete " );
+            ResultSet rs7 = ps7.executeQuery();
+            PreparedStatement ps8 = conn.prepareStatement
+            				( "  	select distinct k.id_kpi as name ,a.Code_requete , k.seuil_gap as seuil_gap , k.seuil as seuil , k.seuil_data_quality as seuil_dataQuality  from vue_detaille a  \r\n"
+            				+ "		left outer join kpi k on k.id_kpi=a.Code_requete   " );
+            ResultSet rs8 = ps8.executeQuery();
+            while (rs1.next()&&rs2.next()&&rs3.next()&&rs5.next()&&rs6.next()&&rs7.next()&&rs8.next()) {
+                System.out.println("pap");
+
+//
+//                Vue_Globale blog = new Vue_Globale();
+//     
+//                blog.setDateDeb(rs5.getString("datedeb"));
+//                blog.setDateFin(rs5.getString("datefin"));
+//         //       blog.setDate(rs.getString("Date"));
+//                blog.setCode_requete(rs7.getLong("Code_requete"));
+//                blog.setVal_kpi1(rs7.getLong("val3"));
+//                blog.setVal_kpi2(rs7.getLong("val4"));
+//                blog.setName_kpi(rs7.getString("name"));
+//                
+//                blog.setSeuil_dataQuality(rs8.getFloat("seuil_dataQuality"));
+//                blog.setSeuil(rs8.getFloat("seuil"));
+//                blog.setSeuil_gap(rs8.getFloat("seuil_gap"));
+////                blog.setLoad1(rs.getString("val1"));
+////                blog.setLoad2(rs.getString("val2"));
+//                //probleme au niveau de nbreRecordOk si on a un seul enregistrement
+//                blog.setNbreRecordOk(rs7.getInt("nbreRecordOK"));
+//                DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+//                Date dateobj = new Date();
+//                blog.dateExec = (dfff.format(dateobj));
+//                java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
+//                blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
+//             
+//                blog.setNbreRecordNotOk(rs2.getInt("nbreRecordNotOk"));
+//       
+//                blog.setDataQualite((rs1.getInt("nbreRecordOk"))*100f /  ((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk"))));
+//                
+//            
+////                System.out.println((rs1.getInt("nbreRecordOK") / (Math.addExact(rs1.getInt("nbreRecordOk"), rs2.getInt("nbreRecordNotOk"))) )*100000);
+////                System.out.println((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk")));
+////                System.out.println((rs1.getInt("nbreRecordOk"))*100 /  ((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk"))));
+//             //   System.out.println(rs);
+////                System.out.println((rs.getDouble("nbreRecordOk") / Math.max(rs.getDouble("val1"), rs.getDouble("val2"))) * 100F);
+////                blog.setDataQualite(
+////                        ddf.format((rs.getDouble("nbreRecordOk") / Math.max(rs.getDouble("val1"), rs.getDouble("val2"))) * 100F));
+//
+////                blog.setFoundDB1(rs.getInt("load1"));
+////                blog.setFoundDB2(rs.getInt("load2"));
+//            	blog.setGap((long) rs3.getInt("gap"));
+//                java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
+////                assert(Float.NaN, 0f / 0);
+//                BigDecimal bigD = new BigDecimal((rs3.getInt("gap")   / (Math.max(rs3.getDouble("val4"), rs3.getDouble("val3")))* 100f));
+//             	blog.setGAP_par_100(dff.format(bigD));
+//                System.out.println(blog.getGap());
+////                System.out.println(k.getSeuil_dataQuality());
+////                System.out.println(k.getSeuil_gap());
+////                System.out.println(k.getSeuil());
+//                System.out.println(rs3.getInt("val4"));
+//                System.out.println(rs3.getInt("val3"));
+//                if(((rs3.getInt("gap") == 0) && ((rs1.getInt("nbreRecordOk"))*100f / ( ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk")))) ==100.0f))){
+//                    blog.setAcceptation("OK");
+//                }
+//                else if(rs8.getFloat("seuil_dataQuality")< ((rs1.getInt("nbreRecordOk"))*100f /  ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk"))))
+//                        && rs8.getFloat("seuil_gap")>(rs3.getInt("gap") )  ){
+//                    blog.setAcceptation("OK partiel");
+//                }else{
+//                    blog.setAcceptation("NotOk");
+//                }
+//
+//                rslt2.add(blog);
+//            }
+
+            model.addAttribute("rslt", rslt2);
+
+        
+
+//        for (Vue_Globale r : rslt2){
+//            rslRepository.save(r);
+       }
+
+	 return "resultat3";
+
+	}
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 //------------------------------------------------------------------VueGlobal----------------------------------------------------// 
+	 
+	
+	 
+	 
+	@RequestMapping(value = "/LoadAllData", method = RequestMethod.GET)
+	public String GetRes10(Model model, @RequestParam("kpiii") String[] kpis, @RequestParam("DateDeb") String dateDeb,
+			@RequestParam("DateFin") String dateFin 
+			, @RequestParam("db1") long db1, @RequestParam("db2") Long db2) throws Exception {
+
+		if (new SimpleDateFormat("yyyy-MM-dd").parse(dateDeb)
+				.compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(dateFin)) > 0) {
+			model.addAttribute("message", "date Deb supérieur à date Fin");
+			return "resultat10";
+		}
+		Database d1 = dbrepository.findDatabaseById(db1);
+		Database d2 = dbrepository.findDatabaseById(db2);
+		List<Database1> rslt = new ArrayList<Database1>();
+		for (String s : kpis) {
+			long kpi = Long.parseLong(s);
+			Kpi k = kpirepository.findById(kpi).get();
+
+			Requete r1 = new Requete();
+			for (Requete r : k.getRequetess()) {
+				if (r1 != r) {
+					r1 = r;
+
+					if (dbrepository.findDatabaseById(db1).equals(r.getId_databasee())
+							) {
+
+						if (r.getId_databasee().getSystem().equals("SqlServer")) {
+
+							Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+							Connection con = DriverManager.getConnection(
+									"jdbc:sqlserver://localhost:" + r.getId_databasee().getPort() + ";databaseName="
+											+ r.getId_databasee().getName(),
+									r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+
+							String date = r.getDate();
+							String copr = r.getCopr();
+							String val_kpi = r.val_kpi;
+							String alias_val_kpi = r.val_kpi_alias;
+
+							List<Dimension> dimss = r.getDims();
+							String dimension = " ";
+							for (Dimension d : dimss) {
+								if (d == dimss.get(dimss.size() - 1)) {
+									dimension = dimension + d.getVal_dim();
+								} else {
+									dimension = dimension + d.getVal_dim() + " +'|'+ ";
+								}
+							}
+							System.out.println(dimension);
+							PreparedStatement ps00 = con.prepareStatement("delete from database1 where id_kpi= " + k.id_kpi + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
+							int rs0 = ps00.executeUpdate();	
+							System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ,"
+									+ dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr
+									+ " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by "
+									+ date + " ," + dimension);
+							System.out.println("no1");
+							PreparedStatement ps = con.prepareStatement("Select " + date + " as date, " + k.getId_kpi()
+									+ " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as "
+									+ alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '"
+									+ dateFin + "' group by " + date + " ," + dimension);
+							System.out.println("no2");
+							ResultSet rs = ps.executeQuery();
+
+							while (rs.next()) {
+								Database1 blog = new Database1();
+								blog.setDate(rs.getString("date"));
+								blog.setIdKpi(rs.getFloat("Code_requete"));
+								blog.setVal_dim(rs.getString("val_dim"));
+								blog.setVal_kpi(rs.getFloat(alias_val_kpi));
+								blog.setSysteme("SqlServer");
+								rslt.add(blog);
+							}
+
+							con.close();
+						} else if (r.getId_databasee().getSystem().equals("Postgres")) {
+
+							try {
+								Connection conn = null;
+								Class.forName("org.postgresql.Driver");
+								conn = DriverManager.getConnection(
+										"jdbc:postgresql://localhost:" + r.getId_databasee().getPort() + "/"
+												+ r.getId_databasee().getName(),
+										r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+
+								String date = r.getDate();
+								String copr = r.getCopr();
+								String val_kpi = r.val_kpi;
+								String alias_val_kpi = r.val_kpi_alias;
+								String name_db = r.getId_databasee().getName();
+								List<Dimension> dimss = r.getDims();
+								String dimension = " ";
+								for (Dimension d : dimss) {
+									if (d == dimss.get(dimss.size() - 1)) {
+										dimension = dimension + d.getVal_dim();
+									} else {
+										dimension = dimension + d.getVal_dim() + " ||'|'|| ";
+									}
+								}
+								System.out.println("no4");
+								System.out.println(dimension);
+								System.out.println("Select " + date + " as date, " + k.getId_kpi()
+										+ " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as "
+										+ alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb
+										+ "' and " + dateFin + " group by " + date + " ," + dimension);
+
+								PreparedStatement ps = conn.prepareStatement("Select " + date + " as date, "
+										+ k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi
+										+ " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb
+										+ "' and '" + dateFin + "' group by " + date + " ," + dimension);
+								ResultSet rs = ps.executeQuery();
+								System.out.println("no3");
+								while (rs.next()) {
+									Database1 blog = new Database1();
+									blog.setDate(rs.getString("date"));
+									blog.setIdKpi(rs.getFloat("Code_requete"));
+									blog.setVal_dim(rs.getString("val_dim"));
+									blog.setVal_kpi(rs.getFloat(alias_val_kpi));
+									System.out.println("dddddddd" + name_db);
+									blog.setDatabase_name(name_db);
+									blog.setSysteme(name_db);
+							
+									blog.setDbname(name_db);
+									rslt.add(blog);
+								
+					
+								}
+								conn.close();
+							} catch (Exception e) {
+								System.out.println(
+										"Failed to create JDBC dateDeb connection " + e.toString() + e.getMessage());
+							}
+						} else if (r.getId_databasee().getSystem().equals("Oracle"))
+							try {
+
+								Class.forName("oracle.jdbc.OracleDriver");
+								String url = "jdbc:oracle:thin:@localhost:" + r.getId_databasee().getPort() + "/"
+										+ r.getId_databasee().getName() + r.getId_databasee().getUsername()
+										+ r.getId_databasee().getPassword();
+								System.out.println();
+								Connection con = DriverManager.getConnection(
+										"jdbc:oracle:thin:@localhost:" + r.getId_databasee().getPort() + "/"
+												+ r.getId_databasee().getName(),
+										r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+
+							} catch (Exception e) {
+								System.out.println("Failed to create JDBC dateDeb connection " + e.getMessage());
+							}
+						else {
+
+							System.out.println("no connexions");
+						}
+
+					}
+				}
+			}
+		}
+		System.out.println(rslt.size());
+		
+//		for (Database1 rs : rslt) {
+//	
+//			Database1 r = new Database1();
+//			
+//			r.setDate(rs.getDate());
+//			r.setIdKpi(rs.getIdKpi());
+//			r.setVal_dim(rs.getVal_dim());
+//			r.setVal_kpi(rs.getVal_kpi());
+//			r.setSysteme(rs.getSysteme());
+//			r.setKpi(kpirepository.findById((long) rs.getIdKpi()).get());
+//			r.setDatabase_name(rs.getDatabase_name());
+//		
+//		
+//			database1Service.InsertOrUpdate(r);
+//
+//		}
+		
+		List<Vue_Globale> rslt2 = new ArrayList<Vue_Globale>();
+		for (String s : kpis) {
+			long kpi = Long.parseLong(s);
+			Kpi k = kpirepository.findById(kpi).get();
+
+			System.out.println("voilaaa");
+			Connection conn = null;
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
+			PreparedStatement ps00 = conn.prepareStatement("delete from database1 where id_kpi= " + k.id_kpi + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
+			int rs0 = ps00.executeUpdate();	
+
+//			PreparedStatement ps00 = conn.prepareStatement("delete from database1 where id_kpi= " + k.getId_kpi() + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
+//			int rs0 = ps00.executeUpdate();	
+			PreparedStatement ps4 = conn.prepareStatement("select T2.date,sum(T2.nbre) as load2 from\n"
+					+ "(select a.idkpi, count(a.valeur_dim) as Nbre,a.date from database1 a \n" + "where a.idkpi="
+					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
+					+ d2.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim\n" + "except all\n"
+					+ "select a.idkpi, count(a.valeur_dim) as nbre,a.date from database1 a \n" + "where a.idkpi="
+					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
+					+ d1.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim) as T2 \n"
+					+ "group by T2.date \n" + "order by T2.date ");
+
+		
+			PreparedStatement ps = conn.prepareStatement(
+					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val3 , \r\n"
+					+ "							  k.name_kpi as name from database1 a ,database1 b ,kpi k\r\n"
+					+ "							  where a.idkpi = k.id_kpi \r\n"
+					
+			);
+
+			ResultSet rs = ps.executeQuery();
+
+			PreparedStatement ps1 = conn.prepareStatement(
+					"select  valeur_dim as mix from database1 where valeur_dim = (select max(valeur_dim) from database1)");
+			ResultSet rs1 = ps1.executeQuery();
+
+			long startTime = System.currentTimeMillis();
+
+
+
+			ResultSet rs4 = ps4.executeQuery();
+			long startTime2 = System.currentTimeMillis();
+		long startTime3 = System.currentTimeMillis();
+			System.out.println("bf");
+
+//			while (rs.next()) {
+//		
+//				System.out.println("pap");
+//
+//				Vue_Globale blog = new Vue_Globale();
+//				blog.setDate(rs.getString("Date"));
+//				blog.setCode_requete(rs.getLong("Code_requete"));
+//				blog.setVal_kpi1(rs.getLong("val3"));
+//		
+//				blog.setName_kpi(rs.getString("name"));
+//
+//				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+//				Date dateobj = new Date();
+//				blog.dateExec = (dfff.format(dateobj));
+//				java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
+//				blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
+//
+//
+//
+////				rslt2.add(blog);
+//
+//			}
+
+		}
+		for (Database1 rs : rslt) {
+			
+			Database1 r = new Database1();
+			
+			r.setDate(rs.getDate());
+			r.setIdKpi(rs.getIdKpi());
+			r.setVal_dim(rs.getVal_dim());
+			r.setVal_kpi(rs.getVal_kpi());
+			r.setSysteme(rs.getSysteme());
+			r.setKpi(kpirepository.findById((long) rs.getIdKpi()).get());
+			r.setDatabase_name(rs.getDatabase_name());
+		
+		
+			database1Service.InsertOrUpdate(r);
+
+		}
+
+		List<Vue_Globale> rslt21 = new ArrayList<Vue_Globale>();
+		for (String s : kpis) {
+			long kpi = Long.parseLong(s);
+			Kpi k = kpirepository.findById(kpi).get();
+
+			System.out.println("voilaaa");
+			Connection conn = null;
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
+		
+
+//			PreparedStatement ps00 = conn.prepareStatement("delete from database1 where id_kpi= " + k.getId_kpi() + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
+//			int rs0 = ps00.executeUpdate();	
+			PreparedStatement ps4 = conn.prepareStatement("select T2.date,sum(T2.nbre) as load2 from\n"
+					+ "(select a.idkpi, count(a.valeur_dim) as Nbre,a.date from database1 a \n" + "where a.idkpi="
+					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
+					+ d2.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim\n" + "except all\n"
+					+ "select a.idkpi, count(a.valeur_dim) as nbre,a.date from database1 a \n" + "where a.idkpi="
+					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
+					+ d1.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim) as T2 \n"
+					+ "group by T2.date \n" + "order by T2.date ");
+
+		
+			PreparedStatement ps = conn.prepareStatement(
+					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val3 , \r\n"
+					+ "							  k.name_kpi as name from database1 a ,database1 b ,kpi k\r\n"
+					+ "							  where a.idkpi = k.id_kpi \r\n"
+					
+			);
+
+			ResultSet rs = ps.executeQuery();
+
+			PreparedStatement ps1 = conn.prepareStatement(
+					"select  valeur_dim as mix from database1 where valeur_dim = (select max(valeur_dim) from database1)");
+			ResultSet rs1 = ps1.executeQuery();
+
+			long startTime = System.currentTimeMillis();
+
+
+
+			ResultSet rs4 = ps4.executeQuery();
+			long startTime2 = System.currentTimeMillis();
+		long startTime3 = System.currentTimeMillis();
+			System.out.println("bf");
+
+//			while (rs.next()) {
+//		
+//				System.out.println("pap");
+//
+//				Vue_Globale blog = new Vue_Globale();
+//				blog.setDate(rs.getString("Date"));
+//				blog.setCode_requete(rs.getLong("Code_requete"));
+//				blog.setVal_kpi1(rs.getLong("val3"));
+//		
+//				blog.setName_kpi(rs.getString("name"));
+//
+//				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+//				Date dateobj = new Date();
+//				blog.dateExec = (dfff.format(dateobj));
+//				java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
+//				blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
+//
+//
+//
+//				rslt21.add(blog);
+
+//		}
+
+		}
+		
+
+		for (Vue_Globale r : rslt21) {
+			
+			database1repository.save(r);
+		}
+	//	model.addAttribute("rslt", rslt21);
+
+		
+
+		
+		
+		
+		
+		
+		
+
+		List<Database2> rslt1 = new ArrayList<Database2>();
+		for (String s : kpis) {
+			long kpi = Long.parseLong(s);
+			Kpi k = kpirepository.findById(kpi).get();
+
+			Requete r1 = new Requete();
+			for (Requete r : k.getRequetess()) {
+				if (r1 != r) {
+					r1 = r;
+
+					if (dbrepository.findDatabaseById(db2).equals(r.getId_databasee())
+							) {
+
+						if (r.getId_databasee().getSystem().equals("SqlServer")) {
+
+							Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+							Connection con = DriverManager.getConnection(
+									"jdbc:sqlserver://localhost:" + r.getId_databasee().getPort() + ";databaseName="
+											+ r.getId_databasee().getName(),
+									r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+
+							String date = r.getDate();
+							String copr = r.getCopr();
+							String val_kpi = r.val_kpi;
+							String alias_val_kpi = r.val_kpi_alias;
+
+							List<Dimension> dimss = r.getDims();
+							String dimension = " ";
+							for (Dimension d : dimss) {
+								if (d == dimss.get(dimss.size() - 1)) {
+									dimension = dimension + d.getVal_dim();
+								} else {
+									dimension = dimension + d.getVal_dim() + " +'|'+ ";
+								}
+							}
+							System.out.println(dimension);
+
+							System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ,"
+									+ dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr
+									+ " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by "
+									+ date + " ," + dimension);
+							System.out.println("no1");
+							PreparedStatement ps = con.prepareStatement("Select " + date + " as date, " + k.getId_kpi()
+									+ " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as "
+									+ alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '"
+									+ dateFin + "' group by " + date + " ," + dimension);
+							System.out.println("no2");
+							ResultSet rs = ps.executeQuery();
+
+							while (rs.next()) {
+								Database2 blog = new Database2();
+								blog.setDate(rs.getString("date"));
+								blog.setIdKpi(rs.getFloat("Code_requete"));
+								blog.setVal_dim(rs.getString("val_dim"));
+								blog.setVal_kpi(rs.getFloat(alias_val_kpi));
+								blog.setSysteme("SqlServer");
+								rslt1.add(blog);
+							}
+
+							con.close();
+						} else if (r.getId_databasee().getSystem().equals("Postgres")) {
+
+							try {
+								Connection conn = null;
+								Class.forName("org.postgresql.Driver");
+								conn = DriverManager.getConnection(
+										"jdbc:postgresql://localhost:" + r.getId_databasee().getPort() + "/"
+												+ r.getId_databasee().getName(),
+										r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+
+								String date = r.getDate();
+								String copr = r.getCopr();
+								String val_kpi = r.val_kpi;
+								String alias_val_kpi = r.val_kpi_alias;
+								String name_db = r.getId_databasee().getName();
+								List<Dimension> dimss = r.getDims();
+								String dimension = " ";
+								for (Dimension d : dimss) {
+									if (d == dimss.get(dimss.size() - 1)) {
+										dimension = dimension + d.getVal_dim();
+									} else {
+										dimension = dimension + d.getVal_dim() + " ||'|'|| ";
+									}
+								}
+								System.out.println("no4");
+								System.out.println(dimension);
+								System.out.println("Select " + date + " as date, " + k.getId_kpi()
+										+ " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as "
+										+ alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb
+										+ "' and " + dateFin + " group by " + date + " ," + dimension);
+
+								PreparedStatement ps = conn.prepareStatement("Select " + date + " as date, "
+										+ k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi
+										+ " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb
+										+ "' and '" + dateFin + "' group by " + date + " ," + dimension);
+								ResultSet rs = ps.executeQuery();
+								System.out.println("no3");
+								while (rs.next()) {
+									Database2 blog = new Database2();
+									blog.setDate(rs.getString("date"));
+									blog.setIdKpi(rs.getFloat("Code_requete"));
+									blog.setVal_dim(rs.getString("val_dim"));
+									blog.setVal_kpi(rs.getFloat(alias_val_kpi));
+									System.out.println("dddddddd" + name_db);
+									blog.setDatabase_name(name_db);
+									blog.setSysteme(name_db);
+							
+									blog.setDbname(name_db);
+									rslt1.add(blog);
+								
+					
+								}
+								conn.close();
+							} catch (Exception e) {
+								System.out.println(
+										"Failed to create JDBC dateDeb connection " + e.toString() + e.getMessage());
+							}
+						} else if (r.getId_databasee().getSystem().equals("Oracle"))
+							try {
+
+								Class.forName("oracle.jdbc.OracleDriver");
+								String url = "jdbc:oracle:thin:@localhost:" + r.getId_databasee().getPort() + "/"
+										+ r.getId_databasee().getName() + r.getId_databasee().getUsername()
+										+ r.getId_databasee().getPassword();
+								System.out.println();
+								Connection con = DriverManager.getConnection(
+										"jdbc:oracle:thin:@localhost:" + r.getId_databasee().getPort() + "/"
+												+ r.getId_databasee().getName(),
+										r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+
+							} catch (Exception e) {
+								System.out.println("Failed to create JDBC dateDeb connection " + e.getMessage());
+							}
+						else {
+
+							System.out.println("no connexions");
+						}
+
+					}
+				}
+			}
+		}
+		System.out.println(rslt1.size());
+		for (Database2 rs : rslt1) {
+		
+			Database2 r = new Database2();
+			
+			r.setDate(rs.getDate());
+			r.setIdKpi(rs.getIdKpi());
+			r.setVal_dim(rs.getVal_dim());
+			r.setVal_kpi(rs.getVal_kpi());
+			r.setSysteme(rs.getSysteme());
+			r.setKpi(kpirepository.findById((long) rs.getIdKpi()).get());
+			r.setDatabase_name(rs.getDatabase_name());
+		
+		
+			database2Service.InsertOrUpdate(r);
+
+		}
+		
+		List<Vue_Globale> rslt211 = new ArrayList<Vue_Globale>();
+		for (String s : kpis) {
+			long kpi = Long.parseLong(s);
+			Kpi k = kpirepository.findById(kpi).get();
+
+			System.out.println("voilaaa");
+			Connection conn = null;
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
+			PreparedStatement ps00 = conn.prepareStatement("delete from database2 where id_kpi= " + k.id_kpi + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
+			int rs0 = ps00.executeUpdate();	
+
+			PreparedStatement ps4 = conn.prepareStatement("select T2.date,sum(T2.nbre) as load2 from\n"
+					+ "(select a.idkpi, count(a.valeur_dim) as Nbre,a.date from database2 a \n" + "where a.idkpi="
+					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
+					+ d2.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim\n" + "except all\n"
+					+ "select a.idkpi, count(a.valeur_dim) as nbre,a.date from database2 a \n" + "where a.idkpi="
+					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
+					+ d1.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim) as T2 \n"
+					+ "group by T2.date \n" + "order by T2.date ");
+
+	
+
+			PreparedStatement ps = conn.prepareStatement(
+					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val4 , \r\n"
+					+"  k.name_kpi as name from database2 a ,database2 b ,kpi k \r\n"
+					+"  where a.idkpi = k.id_kpi \r\n"
+							
+
+			);
+
+			ResultSet rs = ps.executeQuery();
+
+			PreparedStatement ps1 = conn.prepareStatement(
+					"select  valeur_dim as mix from database2 where valeur_dim = (select max(valeur_dim) from database2)");
+			ResultSet rs1 = ps1.executeQuery();
+
+			long startTime = System.currentTimeMillis();
+
+
+
+			System.out.println("bf");
+
+			while (rs.next()) {
+				System.out.println("pap");
+
+				Vue_Globale blog = new Vue_Globale();
+				blog.setDate(rs.getString("Date"));
+				blog.setCode_requete(rs.getLong("Code_requete"));
+
+				blog.setVal_kpi2(rs.getLong("val4"));
+				blog.setName_kpi(rs.getString("name"));
+ 
+				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+				Date dateobj = new Date();
+				blog.dateExec = (dfff.format(dateobj));
+				java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
+				blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
+
+
+
+				rslt211.add(blog);
+
+			}
+
+		}
+		for (Database2 rs : rslt1) {
+			
+			Database2 r = new Database2();
+			
+			r.setDate(rs.getDate());
+			r.setIdKpi(rs.getIdKpi());
+			r.setVal_dim(rs.getVal_dim());
+			r.setVal_kpi(rs.getVal_kpi());
+			r.setSysteme(rs.getSysteme());
+			r.setKpi(kpirepository.findById((long) rs.getIdKpi()).get());
+			r.setDatabase_name(rs.getDatabase_name());
+		
+		
+			database2Service.InsertOrUpdate(r);
+
+		}
+		
+		List<Vue_Globale> rslt2121 = new ArrayList<Vue_Globale>();
+		for (String s : kpis) {
+			long kpi = Long.parseLong(s);
+			Kpi k = kpirepository.findById(kpi).get();
+
+			System.out.println("voilaaa");
+			Connection conn = null;
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
+		
+
+			PreparedStatement ps4 = conn.prepareStatement("select T2.date,sum(T2.nbre) as load2 from\n"
+					+ "(select a.idkpi, count(a.valeur_dim) as Nbre,a.date from database2 a \n" + "where a.idkpi="
+					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
+					+ d2.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim\n" + "except all\n"
+					+ "select a.idkpi, count(a.valeur_dim) as nbre,a.date from database2 a \n" + "where a.idkpi="
+					+ k.id_kpi + "    and a.date  between '" + dateDeb + "' and '" + dateFin + "' and a.system='"
+					+ d1.getSystem() + "' \n" + "group by a.idkpi,a.date,a.system,a.valeur_dim) as T2 \n"
+					+ "group by T2.date \n" + "order by T2.date ");
+
+	
+
+			PreparedStatement ps = conn.prepareStatement(
+					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val4 , \r\n"
+					+"  k.name_kpi as name from database2 a ,database2 b ,kpi k \r\n"
+					+"  where a.idkpi = k.id_kpi \r\n"
+							
+
+			);
+
+			ResultSet rs = ps.executeQuery();
+
+			PreparedStatement ps1 = conn.prepareStatement(
+					"select  valeur_dim as mix from database2 where valeur_dim = (select max(valeur_dim) from database2)");
+			ResultSet rs1 = ps1.executeQuery();
+
+			long startTime = System.currentTimeMillis();
+
+
+
+			System.out.println("bf");
+
+//			while (rs.next()) {
+//				System.out.println("pap");
+//
+//				Vue_Globale blog = new Vue_Globale();
+//				blog.setDate(rs.getString("Date"));
+//				blog.setCode_requete(rs.getLong("Code_requete"));
+//
+//				blog.setVal_kpi2(rs.getLong("val4"));
+//				blog.setName_kpi(rs.getString("name"));
+// 
+//				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+//				Date dateobj = new Date();
+//				blog.dateExec = (dfff.format(dateobj));
+//				java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
+//				blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
+//
+//
+//
+//				rslt2121.add(blog);
+//
+//			}
+
+		}
+		for (Vue_Globale r : rslt2121) {
+			database2repository.save(r);
+		}
+//		model.addAttribute("rslt", rslt2121);
+
+		
+		
+		
+		
+		List<Vue_Detaillé> rslt202 = new ArrayList<>();
+
+		for (String s : kpis) {
+			long kpi = Long.parseLong(s);
+			Kpi k = kpirepository.findById(kpi).get();
+
+			
+		
+
+		
+			Connection conn = null;
+
+
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
+
+
+			PreparedStatement ps0 = conn.prepareStatement("delete from vue_detaille where code_requete= " + k.getId_kpi() + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
+			int rs0 = ps0.executeUpdate();	
+			PreparedStatement ps = conn
+					.prepareStatement("select  k.name_kpi as name ,a.idkpi  Code_requete , a.date as Date , a.valeur_dim as dim , COALESCE(a.val_kpi,0) as val3  , COALESCE(b.val_kpi,0)  as val4 ,0 as nbreRecordOk ,0 as nbreRecordNotOk,abs(COALESCE(a.val_kpi,0) - COALESCE(b.val_kpi,0)) as gap from database1 a   \r\n"
+							+"Full outer join database2 b  on  a.id_kpi = b.id_kpi and a.valeur_dim = b.valeur_dim and a.date = b.date\r\n"
+							+"left outer join kpi k on k.id_kpi=a.id_kpi \r\n"
+							+"where a.id_kpi =" +k.id_kpi+" \r\n");
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Vue_Detaillé blog = new Vue_Detaillé();
+				blog.setDate(rs.getString("Date"));
+				blog.setCode_requete(rs.getLong("Code_requete"));
+				blog.setVal_kpi1(rs.getFloat("val3"));
+				blog.setVal_kpi2(rs.getFloat("val4"));
+				 blog.setName_kpi(rs.getString("name"));
+				 blog.setVal_dim(rs.getString("dim"));
+				 System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+		            BigDecimal bd = new BigDecimal(rs.getLong("val4"));
+		            DecimalFormat f = new DecimalFormat("##.##");  // this will helps you to always keeps in two decimal places
+		           
+		            System.out.println(f.format(rs.getFloat("val4"))); 
+	                System.out.println(bd.setScale(2,BigDecimal.ROUND_UNNECESSARY));
+				 
+				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+				Date dateobj = new Date();
+			 	
+			
+				
+				int j = 0;
+
+					
+				int i1 = 0;
+		
+
+                if (rs.getInt("gap") > k.getSeuil_gap()) {
+                	i1 = i1+1 ;
+            	blog.setNbreRecordNotOk(rs.getInt("nbreRecordNotOk") + i1);}
+
+				if (rs.getInt("gap") < k.getSeuil_gap()) {
+					j = j + 1;
+					
+			
+				
+				
+					blog.setNbreRecordOk(rs.getInt("nbreRecordOk") + j);
+				}
+				
+				
+			
+			
+            
+				blog.setGap(rs.getFloat("gap"));
+				java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
+				BigDecimal bigD = new BigDecimal(
+						(rs.getInt("gap") * 100) / (Math.max(rs.getDouble("val4"), rs.getDouble("val3"))));
+				blog.setGAP_par_100(dff.format(bigD));			
+
+				rslt202.add(blog);
+			
+				System.out.println("aaaaaarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaa");
+			}
+			for (Vue_Detaillé r : rslt202) {
+				vue_detailsRepository.save(r);	
+			}
+
+			model.addAttribute("rslt", rslt202);
+		}
+	
+	
+	
+		
+		
+	
+
+	        List<Rsl_test_sys> rslt1000 = new ArrayList<Rsl_test_sys>();
+	        for (String s : kpis) {
+	            long kpi = Long.parseLong(s);
+	            Kpi k = kpirepository.findById(kpi).get();
+
+	            Requete r1 = new Requete();
+	            for (Requete r : k.getRequetess()) {
+	                if (r1 != r) {
+	                    r1 = r;
+
+	                    if (dbrepository.findDatabaseById(db1).equals(r.getId_databasee())){  //HEEEEEEEEEEEEEEEEEEEEERE !
+
+	                        if (r.getId_databasee().getSystem().equals("SqlServer")) {
+
+
+	                        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+	                        Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + r.getId_databasee().getPort() +
+	                                        ";databaseName=" + r.getId_databasee().getName()
+	                                , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+
+	                        String date = r.getDate();
+	                        String copr = r.getCopr();
+	                        String val_kpi = r.val_kpi;
+	                        String alias_val_kpi = r.val_kpi_alias;
+
+
+
+	                        List<Dimension> dimss = r.getDims();
+	                        String dimension = " ";
+	                        for (Dimension d : dimss) {
+	                            if (d == dimss.get(dimss.size() - 1)) {
+	                                dimension = dimension + d.getVal_dim();
+	                            } else {
+	                                dimension = dimension + d.getVal_dim() + " +'|'+ ";
+	                            }
+	                        }
+	                        System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb + "' and " + dateFin + " group by " + date + " ," + dimension);
+
+	                        PreparedStatement ps = con.prepareStatement("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by " + date + " ," + dimension);
+	                        ResultSet rs = ps.executeQuery();
+
+	                        while (rs.next()) {
+	                            Rsl_test_sys blog = new Rsl_test_sys();
+	                            blog.setDate(rs.getString("date"));
+	                            blog.setIdKpi(rs.getFloat("Code_requete"));
+	                            blog.setVal_dim(rs.getString("val_dim"));
+	                            blog.setVal_kpi(rs.getFloat(alias_val_kpi));
+	                            blog.setSysteme("SqlServer");
+	                            System.out.println("hetha  tee sqlserver"+blog);
+	                            rslt1000.add(blog);
+	                        }
+
+	                      con.close();
+	                    } else if (r.getId_databasee().getSystem().equals("Postgres")) {
+
+
+	                        try {
+	                            Connection conn = null;
+	                            Class.forName("org.postgresql.Driver");
+	                            conn = DriverManager.getConnection("jdbc:postgresql://localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName()
+	                                    , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+
+	                            String date = r.getDate();
+	                            String copr = r.getCopr();
+	                            String val_kpi = r.val_kpi;
+	                            String alias_val_kpi = r.val_kpi_alias;
+
+
+
+
+
+	                            List<Dimension> dimss = r.getDims();
+	                            String dimension = " ";
+	                            for (Dimension d : dimss) {
+	                                if (d == dimss.get(dimss.size() - 1)) {
+	                                    dimension = dimension + d.getVal_dim();
+	                                } else {
+	                                    dimension = dimension + d.getVal_dim() + " ||'|'|| ";
+	                                }
+	                            }
+	                            System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb + "' and " + dateFin + " group by " + date + " ," + dimension);
+
+	                            PreparedStatement ps = conn.prepareStatement("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by " + date + " ," + dimension);
+	                            ResultSet rs = ps.executeQuery();
+
+	                            while (rs.next()) {
+	                                Rsl_test_sys blog = new Rsl_test_sys();
+	                                blog.setDate(rs.getString("date"));
+	                                blog.setIdKpi(rs.getFloat("Code_requete"));
+	                                blog.setVal_dim(rs.getString("val_dim"));
+	                                blog.setVal_kpi(rs.getFloat(alias_val_kpi));
+	                                blog.setSysteme("Postgres");
+	                                System.out.println("hetha  tee post"+blog);
+	                                rslt1000.add(blog);
+	                            }
+
+	                           conn.close();
+	                        } catch (Exception e) {
+	                            System.out.println("Failed to create JDBC dateDeb connection " + e.toString() + e.getMessage());
+	                        }
+	                    } else if (r.getId_databasee().getSystem().equals("Oracle"))
+	                        try {
+
+	                            Class.forName("oracle.jdbc.OracleDriver");
+	                            String url = "jdbc:oracle:thin:@localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName()
+	                                    + r.getId_databasee().getUsername() + r.getId_databasee().getPassword();
+	                            System.out.println();
+	                            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName()
+	                                    , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
+
+
+	                        } catch (Exception e) {
+	                            System.out.println("Failed to create JDBC dateDeb connection " + e.getMessage());
+	                        }
+	                    else {
+
+	                        System.out.println("no connexions");
+	                    }
+
+	                }}
+	            }
+	        }
+	        System.out.println(rslt.size());
+	   
+		 List<Vue_Globale> rslt00 = new ArrayList<Vue_Globale>();
+	        for (String s : kpis) {
+	            long kpi = Long.parseLong(s);
+	            Kpi k = kpirepository.findById(kpi).get();
+	            Connection conn = null;
+	            Class.forName("org.postgresql.Driver");
+	            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4"
+	                    , "postgres", "root");
+//	            PreparedStatement ps = conn.prepareStatement("select  k.name_kpi as name ,a.idkpi  Code_requete , a.date as Date , a.valeur_dim as dim , a.val_kpi as val3  , b.val_kpi  as val4 ,0 as nbreRecordOk ,0 as nbreRecordNotOk,abs(a.val_kpi - b.val_kpi) as gap from database1 a   \r\n"
+//						+"Full outer join database2 b  on  a.id_kpi = b.id_kpi and a.valeur_dim = b.valeur_dim and a.date = b.date\r\n"
+//						+"left outer join kpi k on a.id_kpi="+k.id_kpi+" \r\n"
+//						+"where a.id_kpi = k.id_kpi \r\n");
+
+	            long startTime = System.currentTimeMillis();
+
+	           PreparedStatement ps0 = conn.prepareStatement("delete from vue_globale where code_requete= " + k.getId_kpi() + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
+				int rs0 = ps0.executeUpdate();	
+	            PreparedStatement ps = conn.prepareStatement("Select date as Date , code_requete as Code_requete , name_kpi as name  from vue_detaille where Code_requete="+k.id_kpi +"  and date  between '" + dateDeb + "' and '" + dateFin + "'");
+	            ResultSet rs = ps.executeQuery();
+	            PreparedStatement ps1 = conn.prepareStatement("Select count(*) as nbreRecordOK from vue_detaille where Code_requete="+k.id_kpi +"  and date  between '" + dateDeb + "' and '" + dateFin + "' and nbre_record_ok = 1");
+	            ResultSet rs1 = ps1.executeQuery();
+	            PreparedStatement ps2 = conn.prepareStatement("Select count(*) as nbreRecordNotOk from vue_detaille where Code_requete="+k.id_kpi +"  and date  between '" + dateDeb + "' and '" + dateFin + "' and nbre_record_not_ok = 1");
+	            ResultSet rs2 = ps2.executeQuery();
+		        PreparedStatement ps3 = conn.prepareStatement("Select sum(val_kpi1) as val3 ,sum(val_kpi2) as val4 ,abs(sum(val_kpi1)- sum(val_kpi2)) as gap from vue_detaille where Code_requete="+k.id_kpi +"  and date  between '" + dateDeb + "' and '" + dateFin + "' ");
+	            ResultSet rs3 = ps3.executeQuery();
+	            PreparedStatement ps4 = conn.prepareStatement("select seuil as seuil , seuil_gap as seuil_gap , seuil_data_quality as seuil_dataQuality from  kpi  where id_kpi="+k.id_kpi +"" );
+	            ResultSet rs4 = ps4.executeQuery();	
+//	            PreparedStatement ps5 = conn.prepareStatement("select date as datedeb from vue_detaille where date LIKE " +dateDeb+ " "  );
+//	            ResultSet rs5 = ps5.executeQuery();
+	            while (rs.next()&&rs1.next()&&rs2.next()&&rs3.next()&&rs4.next()) {
+	                System.out.println("pap");
+
+
+	                Vue_Globale blog = new Vue_Globale();
+	           
+	                blog.setDateDeb(dateDeb);
+	                blog.setDateFin(dateFin);
+	                blog.setDate(rs.getString("Date"));
+	                blog.setCode_requete(rs.getLong("Code_requete"));
+	                blog.setVal_kpi1(rs3.getFloat("val3"));
+	                blog.setVal_kpi2(rs3.getFloat("val4"));
+	                blog.setName_kpi(rs.getString("name"));
+	                blog.setSeuil_dataQuality(rs4.getFloat("seuil_dataQuality"));
+	                blog.setSeuil(rs4.getFloat("seuil"));
+	                blog.setSeuil_gap(rs4.getFloat("seuil_gap"));
+//	                blog.setLoad1(rs.getString("val1"));
+//	                blog.setLoad2(rs.getString("val2"));
+	                //probleme au niveau de nbreRecordOk si on a un seul enregistrement
+	                blog.setNbreRecordOk(rs1.getInt("nbreRecordOK"));
+	                DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+	                Date dateobj = new Date();
+	                blog.dateExec = (dfff.format(dateobj));
+	                java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
+	                blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
+	                DecimalFormat F = new DecimalFormat("###.##");
+	                blog.setVal_kpi1(rs3.getLong("val3"));
+	                blog.setNbreRecordNotOk(rs2.getInt("nbreRecordNotOk"));
+	                float A = rs3.getLong("val3");
+	                blog.setDataQualite((rs1.getInt("nbreRecordOk"))*100f /  ((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk"))));
+	    
+	                BigDecimal bd = new BigDecimal(rs3.getLong("val4"));
+	                System.out.println(bd.setScale(2,BigDecimal.ROUND_UP));
+	                blog.setVal_kpi1(rs3.getLong("val3"));
+	            	blog.setGap((long) rs3.getInt("gap"));
+	                java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
+//	                assert(Float.NaN, 0f / 0);
+	                BigDecimal bigD = new BigDecimal((rs3.getInt("gap")   / (Math.max(rs3.getDouble("val4"), rs3.getDouble("val3")))* 100f));
+	             	blog.setGAP_par_100(dff.format(bigD));
+	                System.out.println(blog.getGap());
+	                System.out.println(k.getSeuil_dataQuality());
+	                System.out.println(k.getSeuil_gap());
+	                System.out.println(k.getSeuil());
+	                System.out.println(rs3.getInt("val4"));
+	                System.out.println(rs3.getInt("val3"));
+	                System.out.println(dateDeb);
+	        
+	                if(((rs3.getInt("gap") == 0) && ((rs1.getInt("nbreRecordOk"))*100f / ( ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk")))) ==100.0f))){
+	                    blog.setAcceptation("OK");
+	                }
+	                else if(k.getSeuil_dataQuality() < ((rs1.getInt("nbreRecordOk"))*100f /  ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk"))))
+	                        && k.getSeuil_gap()>(rs3.getInt("gap") )  ){
+	                    blog.setAcceptation("OK partiel");
+	                }else{
+	                    blog.setAcceptation("NotOk");
+	                }
+
+	                rslt00.add(blog);
+	            }
+
+	            model.addAttribute("rslt", rslt00);
+
+	        }
+
+	        for (Vue_Globale r : rslt00){
+	            rslRepository.save(r);
+	        }
+
+		 return "resultat3";
+
+		 }
+
+	}
+
+		
+	
+	
+	 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+

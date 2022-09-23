@@ -230,7 +230,7 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                       <thead>
                         <tr role="row">
                          <th></th>
-                         <th>Date Debut</th>
+                         <th>Date Deb</th>
                          <th>Date Fin</th>
                    <%--     <th>Date</th>--%>  
                           <th >Code_requete</th>
@@ -272,7 +272,7 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                          <td>${u.getVal_kpi2()}</td>
                          <td>${u.getGap()} </td> 
                          <td> ${u.getGAP_par_100()}% </td>
-                      <  <td>${u.getDataQualite()}% </td>
+                        <td>${u.getDataQualite()}% </td>
                              <c:if test="${u.acceptation=='OK'}">
                              <td> <span style='background-color:#00FF00;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td>
                              </c:if>

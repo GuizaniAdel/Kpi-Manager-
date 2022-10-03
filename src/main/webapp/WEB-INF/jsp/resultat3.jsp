@@ -4,7 +4,8 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
-
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -267,23 +268,27 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                        <%--  <td>${u.getDate()}</td>--%>  
                         <td>${u.getCode_requete()}</td>
                         <td>${u. getName_kpi()}</td>                       
-                   
-                        <td>${u.getVal_kpi1()}</td> 
-                         <td>${u.getVal_kpi2()}</td>
+                    	 <td><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${u.getVal_kpi1()}" /></td> 
+                       	 <td><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${u.getVal_kpi2()}" /></td> 
+<%--                        	 <td>${u.getVal_kpi1()}</td> --%>
+<%--                          <td>${u.getVal_kpi2()}</td> --%>
                          <td>${u.getGap()} </td> 
-                         <td> ${u.getGAP_par_100()}% </td>
+                                <td><fmt:formatNumber type = "number" maxFractionDigits = "2" value = "${u.getGAP_par_100()}" />% </td>
+                         
+<%--                          <td> ${u.getGAP_par_100()}% </td> --%>
                         <td>${u.getDataQualite()}% </td>
-                             <c:if test="${u.acceptation=='OK'}">
-                             <td> <span style='background-color:#00FF00;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td>
-                             </c:if>
-                             <c:if test="${u.acceptation=='NotOk'}">
+                        <td>${u.getAcceptation()} </td>
+<%--                              <c:if test="${u.acceptation=='OK'}"> --%>
+<%--                              <td> <span style='background-color:#00FF00;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td> --%>
+<%--                              </c:if> --%>
+<%--                              <c:if test="${u.acceptation=='NotOk'}"> --%>
 
-                                 <td> <span style='background-color:#F88;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td>
+<%--                                  <td> <span style='background-color:#F88;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td> --%>
 
-                             </c:if>
-                             <c:if test="${u.acceptation=='OK partiel'}">
-                                 <td> <span style='background-color:#90EE90;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td>
-                             </c:if>
+<%--                              </c:if> --%>
+<%--                              <c:if test="${u.acceptation=='OK partiel'}"> --%>
+<%--                                  <td> <span style='background-color:#90EE90;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td> --%>
+<%--                              </c:if> --%>
                          <%--     <td>${u.getLoad1()}</td>
                          <td>${u.getLoad2()} </td> --%>
                           
@@ -291,7 +296,7 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                               <td>${u.getNbreRecordNotOk()} </td>
                        <%--         <td>${u.getFoundDB1()} </td>
                                  <td>${u.getFoundDB2()} </td> --%>
-                               <td>${u.getTempsExec()} </td>
+                               <td>${u.getTempsExec()} Ms</td>
                                <td>${u.getDateExec()} </td> 
                          </tr>
                         
@@ -299,18 +304,25 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                       </tbody>
                     </table>
                   
-             <button class="btn btn-primary" type="submit" onclick=" generateReportC();" >Voir Details</button>
-                    </div>
-       
+   
                      </div>
                      </div>     
                         
-
+ 
                     </form>
                    
                   
                   </div>
-                 </div>
+                      
+                 <div class="ln_solid"></div>
+                      <div class="item form-group">
+                        <div class="col-md-6 col-sm-6 offset-md-3">
+        
+                <button class="btn btn-primary" type="button" onclick="generateReportB();" >Load DB 1</button>
+						  <button class="btn btn-primary" type="reset"  onclick="generateReportA();" >Load DB 2</button>   			 	
+          			 		  <button class="btn btn-primary" type="reset"  onclick="generateReportY();" >Vue Details</button>
+                    </div>
+                        </div>
                   </div>
                   </div>
                   </div>

@@ -32,11 +32,19 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
 
-        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+        <h1>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()" class="btn btn-danger btn-xs">Logout</a></h1>
 
     </c:if>
 
 </div>
+<div class="container">
+
+<h2>Click To Go To The Main Interface</h2><form action="list">
+<input type=submit name= "Main Interface"class="btn btn-success btn-xs">
+
+</form>
+</div>
+
 <!-- /container -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>

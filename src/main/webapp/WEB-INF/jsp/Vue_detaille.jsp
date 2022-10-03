@@ -1,9 +1,11 @@
-
+<%@ page import="com.Springboot.example.service.DbServiceImpl" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -215,6 +217,8 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                           <td>GAP</td>
                             <td> Flag OK</td>
                           <td> Flag Not OK</td>
+                           <td >Database1</td>
+                            <td >Database2</td>
                           </tr>
                           
                        
@@ -229,12 +233,19 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                         <td>${u.getDate()}</td>
                         <td>${u. getName_kpi()}</td>                       
                         <td>${u.getVal_dim()} </td> 
-                        <td>${u.getVal_kpi1()}</td> 
-                         <td>${u.getVal_kpi2()}</td>
-                         <td>${u.getGap()} </td> 
+                        	 <td><fmt:formatNumber type = "number" maxFractionDigits = "0" value = "${u.getVal_kpi1()}" /></td> 
+                       	 <td><fmt:formatNumber type = "number" maxFractionDigits = "0" value = "${u.getVal_kpi2()}" /></td> 
+<%--                         <td>${u.getVal_kpi1()}</td>  --%>
+<%--                          <td>${u.getVal_kpi2()}</td> --%>
+
+                       	 <td><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${u.getGap()}" /></td> 
+<%--                          <td>${u.getGap()} </td>  --%>
                               <td>${u.getNbreRecordOk()} </td>
                               <td>${u.getNbreRecordNotOk()} </td>
-                         
+                               <td>${u.getDatabase1()} </td> 
+                               <td>${u.getDatabase2()} </td>
+<%--                          <td>Value in <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></td> --%>
+<%--                          <td>Value in <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%></td> --%>
                          
                          </tr>
                         

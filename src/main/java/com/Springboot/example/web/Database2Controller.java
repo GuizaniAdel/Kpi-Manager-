@@ -368,7 +368,7 @@ public class Database2Controller {
 
 			PreparedStatement ps = conn.prepareStatement(
 					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val4 , \r\n"
-					+"  k.name_kpi as name from database2 a ,database2 b ,kpi k \r\n"
+					+"  k.name_kpi as name, b.system as system from database2 a ,database2 b ,kpi k \r\n"
 					+"  where a.idkpi = k.id_kpi \r\n"
 							
 
@@ -395,7 +395,8 @@ public class Database2Controller {
 
 				blog.setVal_kpi2(rs.getLong("val4"));
 				blog.setName_kpi(rs.getString("name"));
- 
+				blog.setLoad2(rs.getString("system"));
+				System.out.println(rs.getString("system"));
 				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 				Date dateobj = new Date();
 				blog.dateExec = (dfff.format(dateobj));

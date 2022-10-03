@@ -373,7 +373,7 @@ public class Database1Controller {
 		
 			PreparedStatement ps = conn.prepareStatement(
 					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val3 , \r\n"
-					+ "							  k.name_kpi as name from database1 a ,database1 b ,kpi k\r\n"
+					+ "							  k.name_kpi as name, a.system as system from database1 a ,database1 b ,kpi k\r\n"
 					+ "							  where a.idkpi = k.id_kpi \r\n"
 					
 			);
@@ -401,7 +401,7 @@ public class Database1Controller {
 				blog.setDate(rs.getString("Date"));
 				blog.setCode_requete(rs.getLong("Code_requete"));
 				blog.setVal_kpi1(rs.getLong("val3"));
-		
+				blog.setLoad1(rs.getString("system"));
 				blog.setName_kpi(rs.getString("name"));
 
 				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");

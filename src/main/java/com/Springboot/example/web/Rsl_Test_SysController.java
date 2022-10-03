@@ -1,3 +1,4 @@
+
 package com.Springboot.example.web;
 
 import com.Springboot.example.model.*;
@@ -171,6 +172,7 @@ public class Rsl_Test_SysController {
 //
 //							con.close();
 //						} else
+					
 						if (r.getId_databasee().getSystem().equals("Postgres")) {
 
 							try {
@@ -1750,58 +1752,81 @@ public class Rsl_Test_SysController {
 
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
-
+//			Database d1 = dbrepository.findDatabaseById(db1);
+//			Database d2 = dbrepository.findDatabaseById(db2);
 
 			PreparedStatement ps0 = conn.prepareStatement("delete from vue_detaille where code_requete= " + k.getId_kpi() + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
 			int rs0 = ps0.executeUpdate();	
 			PreparedStatement ps = conn
-					.prepareStatement("select  k.name_kpi as name ,a.idkpi  Code_requete , a.date as Date , a.valeur_dim as dim , COALESCE(a.val_kpi,0) as val3  , COALESCE(b.val_kpi,0)  as val4 ,0 as nbreRecordOk ,0 as nbreRecordNotOk,abs(COALESCE(a.val_kpi,0) - COALESCE(b.val_kpi,0)) as gap from database1 a   \r\n"
-							+"Full outer join database2 b  on  a.id_kpi = b.id_kpi and a.valeur_dim = b.valeur_dim and a.date = b.date\r\n"
-							+"left outer join kpi k on k.id_kpi=a.id_kpi \r\n"
-							+"where a.id_kpi =" +k.id_kpi+" \r\n");
+					.prepareStatement(
+							  "        select coalesce (a.id_kpi,b.id_kpi ) as Code_requete\r\n"
+							+ "        , coalesce (a.date, b.date) as Date\r\n"
+							+ "        , coalesce (a.valeur_dim,b.valeur_dim) as valeur_dim\r\n"
+							+ "        , sum ( coalesce (a.val_kpi,0))  as val_kpi_a\r\n"
+							+ "        , sum ( coalesce (b.val_kpi,0)) as val_kpi_b\r\n"
+							+ "        , sum ( coalesce (a.val_kpi,0) - coalesce (b.val_kpi,0)) as gap\r\n"
+							+ "        , 100*abs (sum (coalesce (a.val_kpi,0) - coalesce (b.val_kpi,0))) / GREATEST  (abs(sum ( coalesce (a.val_kpi,0))), abs (sum ( coalesce (b.val_kpi,0))) ) as gap_par_100\r\n"
+							+ "        , case when (abs (sum ( coalesce (a.val_kpi,0) - coalesce (b.val_kpi,0))) >  K.seuil) then 1 else 0 end as nbre_record_not_ok\r\n"
+							+ "        , case when (abs (sum ( coalesce (a.val_kpi,0) - coalesce (b.val_kpi,0)))<=  K.seuil) then 1 else 0 end as nbre_record_ok\r\n"
+							+ "        ,  K.name_kpi as name, a.system as Database1 , b.system as Database2\r\n"
+							+ "        from database1 a\r\n"
+							+ "        full outer join database2 b on a.id_kpi = b.id_kpi\r\n"
+							+ "        and a.valeur_dim = b.valeur_dim\r\n"
+							+ "        and a.date = b.date\r\n"            
+							+ "        AND a.id_kpi = "+k.id_kpi+ "AND B.id_kpi = " +k.id_kpi+ "\r\n"
+							+ "full outer join kpi K on K.id_kpi = coalesce (a.id_kpi,b.id_kpi )\r\n"
+							+ "WHERE 1=1 \r\n"
+							+ "and abs (coalesce (a.val_kpi,0) + coalesce (b.val_kpi,0))>0        \r\n"
+							+ "and coalesce (a.date, b.date) between '"  + dateDeb +"' and '"  + dateFin +"'  \r\n"
+							+ "GROUP BY  coalesce ( a.id_kpi, b.id_kpi ),  K.name_kpi ,a.system,b.system,coalesce (a.date, b.date),coalesce (a.valeur_dim,b.valeur_dim) ,  K.seuil\r\n");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Vue_Detaillé blog = new Vue_Detaillé();
 				blog.setDate(rs.getString("Date"));
 				blog.setCode_requete(rs.getLong("Code_requete"));
-				blog.setVal_kpi1(rs.getFloat("val3"));
-				blog.setVal_kpi2(rs.getFloat("val4"));
-				 blog.setName_kpi(rs.getString("name"));
-				 blog.setVal_dim(rs.getString("dim"));	
-				 
-				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-				Date dateobj = new Date();
-				
-			
-				
-				int j = 0;
-
-					
-				int i1 = 0;
-		
-
-                if (rs.getInt("gap") > k.getSeuil_gap()) {
-                	i1 = i1+1 ;
-            	blog.setNbreRecordNotOk(rs.getInt("nbreRecordNotOk") + i1);}
-
-				if (rs.getInt("gap") < k.getSeuil_gap()) {
-					j = j + 1;
-					
-			
-				
-				
-					blog.setNbreRecordOk(rs.getInt("nbreRecordOk") + j);
-				}
-				
-				
-			
-			
-            
+				blog.setVal_kpi1(rs.getFloat("val_kpi_a"));
+				blog.setVal_kpi2(rs.getFloat("val_kpi_b"));
+				blog.setName_kpi(rs.getString("name"));
+				blog.setVal_dim(rs.getString("valeur_dim"));	
 				blog.setGap(rs.getFloat("gap"));
-				java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
-				BigDecimal bigD = new BigDecimal(
-						(rs.getInt("gap") * 100) / (Math.max(rs.getDouble("val4"), rs.getDouble("val3"))));
-				blog.setGAP_par_100(dff.format(bigD));			
+				blog.setGAP_par_100(rs.getString("gap_par_100"));
+				blog.setNbreRecordNotOk(rs.getInt("nbre_record_not_ok"));
+				blog.setNbreRecordOk(rs.getInt("nbre_record_ok"));
+				blog.setDatabase1(rs.getString("Database1"));
+				blog.setDatabase2(rs.getString("Database2"));
+//				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+//				Date dateobj = new Date();
+//				
+//			
+//				
+//				int j = 0;
+//
+//					
+//				int i1 = 0;
+//		
+//
+//                if (rs.getInt("gap") > k.getSeuil_gap()) {
+//                	i1 = i1+1 ;
+//            	blog.setNbreRecordNotOk(rs.getInt("nbreRecordNotOk") + i1);}
+//
+//				if (rs.getInt("gap") < k.getSeuil_gap()) {
+//					j = j + 1;
+//					
+//			
+//				
+//				
+//					blog.setNbreRecordOk(rs.getInt("nbreRecordOk") + j);
+//				}
+//				
+//				
+//			
+//			
+//            
+//				blog.setGap(rs.getFloat("gap"));
+//				java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
+//				BigDecimal bigD = new BigDecimal(
+//						(rs.getInt("gap") * 100) / (Math.max(rs.getDouble("val4"), rs.getDouble("val3"))));
+//				blog.setGAP_par_100(dff.format(bigD));			
 
 				rslt2.add(blog);
 			
@@ -3016,64 +3041,99 @@ public class Rsl_Test_SysController {
 	            ResultSet rs3 = ps3.executeQuery();
 	            PreparedStatement ps4 = conn.prepareStatement("select seuil as seuil , seuil_gap as seuil_gap , seuil_data_quality as seuil_dataQuality from  kpi  where id_kpi="+k.id_kpi +"" );
 	            ResultSet rs4 = ps4.executeQuery();	
+	            PreparedStatement ps007 = conn.prepareStatement(
+	            		  "			SELECT Code_requete as Code_requete\r\n"
+	            		+ "        ,sum(val_kpi1) AS Total_System_1\r\n"
+	            		+ "        ,sum(val_kpi2) AS Total_System_2\r\n"
+	            		+ "        ,sum(gap) AS gap_Total\r\n"
+	            		+ "        ,100* abs(sum(gap)) / GREATEST(abs(sum(val_kpi1)), abs(sum(val_kpi2))) AS gap_par_100\r\n"
+	            		+ "        ,sum(nbre_record_not_ok) AS nbre_record_not_ok\r\n"
+	            		+ "        ,sum(nbre_record_ok) AS nbre_record_ok\r\n"
+	            		+ "        ,100 * sum(nbre_record_ok) / (sum(nbre_record_not_ok) + sum(nbre_record_ok)) AS data_Quality\r\n"
+	            		+ "        ,case when abs(sum(gap))  = 0 AND sum(nbre_record_not_ok) =0 THEN 'OK' \r\n"
+	            		+ "         when  ( abs(sum(gap)) / GREATEST(abs(sum(val_kpi1)), abs(sum(val_kpi2)))  <= K.seuil_gap/100  ) \r\n"
+	            		+ "                      AND 100 * sum(nbre_record_ok) / (sum(nbre_record_not_ok) + sum(nbre_record_ok)) >= K.seuil_data_quality\r\n"
+	            		+ "                          THEN 'Partially OK'\r\n"
+	            		+ "                        Else 'NOT OK'\r\n"
+	            		+ "                END as acceptation        \r\n"
+	            		+ "        ,K.name_kpi, K.seuil,  K.seuil_data_quality, K.seuil_gap \r\n"
+	            		+ "FROM vue_detaille A \r\n"
+	            		+ "LEFT JOIN kpi K on A.code_requete = K.id_kpi\r\n"
+	            		+ "WHERE code_requete = "+k.id_kpi +"   AND DATE BETWEEN '" + dateDeb +"' AND '" + dateFin +"'\r\n"
+	            		+ "GROUP BY code_requete, K.name_kpi, K.seuil , K.seuil_data_quality, K.seuil_gap \r\n");
+	        
+	            
+	            
+	            
+
+	            
+	            
+	            ResultSet rs007 = ps007.executeQuery();
 //	            PreparedStatement ps5 = conn.prepareStatement("select date as datedeb from vue_detaille where date LIKE " +dateDeb+ " "  );
 //	            ResultSet rs5 = ps5.executeQuery();
-	            while (rs.next()&&rs1.next()&&rs2.next()&&rs3.next()&&rs4.next()) {
+	            while (rs007.next()) {
 	                System.out.println("pap");
-
+	         
+	                System.out.println(rs007.getString("acceptation"));
 
 	                Vue_Globale blog = new Vue_Globale();
 	           
 	                blog.setDateDeb(dateDeb);
 	                blog.setDateFin(dateFin);
-	                blog.setDate(rs.getString("Date"));
-	                blog.setCode_requete(rs.getLong("Code_requete"));
-	                blog.setVal_kpi1(rs3.getFloat("val3"));
-	                blog.setVal_kpi2(rs3.getFloat("val4"));
-	                blog.setName_kpi(rs.getString("name"));
-	                blog.setSeuil_dataQuality(rs4.getFloat("seuil_dataQuality"));
-	                blog.setSeuil(rs4.getFloat("seuil"));
-	                blog.setSeuil_gap(rs4.getFloat("seuil_gap"));
+	               
+	                blog.setCode_requete(rs007.getLong("Code_requete"));
+	                blog.setVal_kpi1(rs007.getFloat("Total_System_1"));
+	                blog.setVal_kpi2(rs007.getFloat("Total_System_2"));
+	              	blog.setGap((long)rs007.getInt("gap_Total"));
+	              	blog.setGAP_par_100(rs007.getString("gap_par_100"));
+	              	blog.setNbreRecordNotOk(rs007.getInt("nbre_record_not_ok"));
+	            	blog.setNbreRecordOk(rs007.getInt("nbre_record_ok"));
+	              	blog.setDataQualite(rs007.getFloat("data_Quality"));
+	              	blog.setAcceptation(rs007.getString("acceptation"));
+	                blog.setName_kpi(rs007.getString("name_kpi"));
+	                blog.setSeuil_dataQuality(rs007.getFloat("seuil_data_quality"));
+	                blog.setSeuil(rs007.getFloat("seuil"));
+	                blog.setSeuil_gap(rs007.getFloat("seuil_gap"));
 //	                blog.setLoad1(rs.getString("val1"));
 //	                blog.setLoad2(rs.getString("val2"));
 	                //probleme au niveau de nbreRecordOk si on a un seul enregistrement
-	                blog.setNbreRecordOk(rs1.getInt("nbreRecordOK"));
+//	                blog.setNbreRecordOk(rs1.getInt("nbreRecordOK"));
 	                DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 	                Date dateobj = new Date();
 	                blog.dateExec = (dfff.format(dateobj));
 	                java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
-	                blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) / 1000F);
-	                DecimalFormat F = new DecimalFormat("###.##");
-	                blog.setVal_kpi1(rs3.getLong("val3"));
-	                blog.setNbreRecordNotOk(rs2.getInt("nbreRecordNotOk"));
-	                float A = rs3.getLong("val3");
-	                blog.setDataQualite((rs1.getInt("nbreRecordOk"))*100f /  ((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk"))));
-	    
-	                BigDecimal bd = new BigDecimal(rs3.getLong("val4"));
-	                System.out.println(bd.setScale(2,BigDecimal.ROUND_UP));
-	                blog.setVal_kpi1(rs3.getLong("val3"));
-	            	blog.setGap((long) rs3.getInt("gap"));
-	                java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
-//	                assert(Float.NaN, 0f / 0);
-	                BigDecimal bigD = new BigDecimal((rs3.getInt("gap")   / (Math.max(rs3.getDouble("val4"), rs3.getDouble("val3")))* 100f));
-	             	blog.setGAP_par_100(dff.format(bigD));
-	                System.out.println(blog.getGap());
-	                System.out.println(k.getSeuil_dataQuality());
-	                System.out.println(k.getSeuil_gap());
-	                System.out.println(k.getSeuil());
-	                System.out.println(rs3.getInt("val4"));
-	                System.out.println(rs3.getInt("val3"));
-	                System.out.println(dateDeb);
+	                blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) );
+//	                DecimalFormat F = new DecimalFormat("###.##");
+//	                blog.setVal_kpi1(rs3.getLong("val3"));
+//	                blog.setNbreRecordNotOk(rs2.getInt("nbreRecordNotOk"));
+//	                float A = rs3.getLong("val3");
+//	                blog.setDataQualite((rs1.getInt("nbreRecordOk"))*100f /  ((rs2.getInt("nbreRecordNotOk"))+ (rs1.getInt("nbreRecordOk"))));
+//	    
+//	                BigDecimal bd = new BigDecimal(rs3.getLong("val4"));
+//	                System.out.println(bd.setScale(2,BigDecimal.ROUND_UP));
+//	                blog.setVal_kpi1(rs3.getLong("val3"));
+//	          
+//	                java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
+////	                assert(Float.NaN, 0f / 0);
+//	                BigDecimal bigD = new BigDecimal((rs3.getInt("gap")   / (Math.max(rs3.getDouble("val4"), rs3.getDouble("val3")))* 100f));
+//	             	blog.setGAP_par_100(dff.format(bigD));
+//	                System.out.println(blog.getGap());
+//	                System.out.println(k.getSeuil_dataQuality());
+//	                System.out.println(k.getSeuil_gap());
+//	                System.out.println(k.getSeuil());
+//	                System.out.println(rs3.getInt("val4"));
+//	                System.out.println(rs3.getInt("val3"));
+//	                System.out.println(dateDeb);
 	        
-	                if(((rs3.getInt("gap") == 0) && ((rs1.getInt("nbreRecordOk"))*100f / ( ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk")))) ==100.0f))){
-	                    blog.setAcceptation("OK");
-	                }
-	                else if(k.getSeuil_dataQuality() < ((rs1.getInt("nbreRecordOk"))*100f /  ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk"))))
-	                        && k.getSeuil_gap()>(rs3.getInt("gap") )  ){
-	                    blog.setAcceptation("OK partiel");
-	                }else{
-	                    blog.setAcceptation("NotOk");
-	                }
+//	                if(((rs3.getInt("gap") == 0) && ((rs1.getInt("nbreRecordOk"))*100f / ( ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk")))) ==100.0f))){
+//	                    blog.setAcceptation("OK");
+//	                }
+//	                else if(k.getSeuil_dataQuality() < ((rs1.getInt("nbreRecordOk"))*100f /  ((rs1.getInt("nbreRecordOk"))+ (rs2.getInt("nbreRecordNotOk"))))
+//	                        && k.getSeuil_gap()>(rs3.getInt("gap") )  ){
+//	                    blog.setAcceptation("OK partiel");
+//	                }else{
+//	                    blog.setAcceptation("NotOk");
+//	                }
 
 	                rslt00.add(blog);
 	            }
@@ -3096,13 +3156,6 @@ public class Rsl_Test_SysController {
 	
 	
 	 	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

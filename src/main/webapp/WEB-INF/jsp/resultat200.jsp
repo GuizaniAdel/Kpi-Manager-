@@ -211,6 +211,7 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                         <th>Date</th>
                           <th >Code_requete</th>
                           <th>Name_kpi</th>
+                           <th>Database Name</th>
                       
                           <th>Value in <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%></th>
                             <%--  <th>Value in <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></th>
@@ -243,10 +244,7 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                          <td>${u.getDate()}</td>
                         <td>${u.getCode_requete()}</td>
                         <td>${u. getName_kpi()}</td>   
-                        
-                                            
-                   
-                        
+                         <td>${u.getLoad2()}</td>                     
                          <td>${u.getVal_kpi2()}</td>
                          <%--    <td>${u.getVal_kpi1()}</td> 
                          <td>${u.getGap()} </td> 

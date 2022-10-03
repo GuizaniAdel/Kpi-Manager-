@@ -210,7 +210,9 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                         <th>Date</th>
                           <th >Code_requete</th>
                           <th>Name_kpi</th>
+                          <th>Database Name</th>
                           <th>Value in <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></th>
+               
                       <%--     <th>Value in <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%></th>
                          <th> GAP</th>
                           <th> GAP %</th>
@@ -237,14 +239,14 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                           <td class="a-center ">
            <input type="checkbox" value="${s.getId()}" name="kpiii" class="flat" >
         
-           </td>
-                         <td>${s.getDate()}</td>
+           </td>    
+                        <td>${s.getDate()}</td>
                         <td>${s.getCode_requete()}</td>
                         <td>${s.getName_kpi()}</td>   
-                        
-                                            
-                   
+<%--                         <td><%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></td> --%>
+                        <td>${s.getLoad1()}</td> 
                         <td>${s.getVal_kpi1()}</td> 
+                           
                        <%--    <td>${s.getVal_kpi2()}</td>
                          <td>${s.getGap()} </td> 
                          <td> ${s.getGAP_par_100()}% </td>

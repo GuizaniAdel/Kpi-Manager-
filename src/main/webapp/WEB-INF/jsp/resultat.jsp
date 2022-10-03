@@ -364,13 +364,11 @@
 <!--           			 		<button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportH();"> Clean Vue Details Data</button>	 -->
                           <button class="btn btn-primary" type="button" onclick="generateReportB();" >Load DB 1</button>
 						  <button class="btn btn-primary" type="reset"  onclick="generateReportA();" >Load DB 2</button>
-						  <div>		
-                         <button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportD();"> Load data from two databases</button>
+						  
           			 	
           			 		  <button class="btn btn-primary" type="reset"  onclick="generateReportY();" >Vue Details</button>
- 					<button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportZ();"> Vue Global</button>	
  					<button id="load12" class="btn btn-primary" type="button" name="load12"  onclick="generateReportO();"> All Data</button>				
-                        </div>
+                       
                         </div>
                       </div>
                       

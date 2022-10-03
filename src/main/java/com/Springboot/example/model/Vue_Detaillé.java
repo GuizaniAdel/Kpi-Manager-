@@ -19,6 +19,8 @@ public class Vue_Detaillé {
     public double val_kpi1;
     public  double val_kpi2;
     public String name_kpi;
+    public String database1;
+    public String database2;
     public double gap;
   
 	public String GAP_par_100;
@@ -39,6 +41,20 @@ public class Vue_Detaillé {
 
     public void setDate(String date) {
         this.date = date;
+    }
+    public String getDatabase1() {
+        return database1;
+    }
+
+    public void setDatabase1(String database1) {
+        this.database1 = database1;
+    }
+    public String getDatabase2() {
+        return database2;
+    }
+
+    public void setDatabase2(String database2) {
+        this.database2 = database2;
     }
 
     public long getCode_requete() {

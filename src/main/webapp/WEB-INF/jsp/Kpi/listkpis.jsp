@@ -216,10 +216,11 @@
 
              <i class="fa fa-plus-square"></i> </a> </td>
                <td>
-             <a type="submit"  href ="<c:url value='/deleteKpi/${emp.id_kpi}' />" class="btn btn-danger btn-xs">
+             <a type="submit"  href ="<c:url value='/delete/${emp.id_kpi}' />" class="btn btn-danger btn-xs">
                 <i class="fa fa-trash-o"></i>
                 </a> 
             </td>
+           
        </tr>
        </c:forEach>
                        </tbody>

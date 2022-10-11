@@ -204,7 +204,7 @@ public class Rsl_Test_SysController {
 								PreparedStatement ps0 = conn.prepareStatement("delete from rsl_test_sys where id_kpi =: " + k.id_kpi + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
 								ResultSet rs0 = ps0.executeQuery();
 								
-								System.out.println(rslt.size());
+//								System.out.println(rslt.size());
 								for (Rsl_test_sys rs1 : rslt) {
 
 									Rsl_test_sys r2 = new Rsl_test_sys();
@@ -253,7 +253,7 @@ public class Rsl_Test_SysController {
 			}
 		}
 
-		System.out.println(rslt.size());
+//		System.out.println(rslt.size());
 		for (Rsl_test_sys rs : rslt) {
 
 			Rsl_test_sys r = new Rsl_test_sys();
@@ -275,7 +275,7 @@ public class Rsl_Test_SysController {
 			long kpi = Long.parseLong(s);
 			Kpi k = kpirepository.findById(kpi).get();
 
-			System.out.println("voilaaa");
+//			System.out.println("voilaaa");
 			Connection conn = null;
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
@@ -409,7 +409,7 @@ public class Rsl_Test_SysController {
 									PreparedStatement ps0 = conn.prepareStatement("delete from vue_detaille where code_requete =: " + k.id_kpi + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
 									ResultSet rs0 = ps0.executeQuery();
 									
-									System.out.println(rslt.size());
+//									System.out.println(rslt.size());
 									for (Vue_Detaillé rs1 : rslt) {
 
 										Vue_Detaillé r2 = new Vue_Detaillé();
@@ -459,7 +459,7 @@ public class Rsl_Test_SysController {
 				}
 			}
 
-			System.out.println(rslt.size());
+//			System.out.println(rslt.size());
 			for (Vue_Detaillé rs : rslt) {
 
 				Vue_Detaillé r = new Vue_Detaillé();
@@ -480,7 +480,7 @@ public class Rsl_Test_SysController {
 				long kpi = Long.parseLong(s);
 				Kpi k = kpirepository.findById(kpi).get();
 
-				System.out.println("voilaaa");
+//				System.out.println("voilaaa");
 				Connection conn = null;
 				Class.forName("org.postgresql.Driver");
 				conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
@@ -558,7 +558,7 @@ public class Rsl_Test_SysController {
 									dimension = dimension + d.getVal_dim() + " +'|'+ ";
 								}
 							}
-							System.out.println(dimension);
+//							System.out.println(dimension);
 
 							System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ,"
 									+ dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr
@@ -608,8 +608,8 @@ public class Rsl_Test_SysController {
 										dimension = dimension + d.getVal_dim() + " ||'|'|| ";
 									}
 								}
-								System.out.println("no4");
-								System.out.println(dimension);
+					
+//								System.out.println(dimension);
 								System.out.println("Select " + date + " as date, "
 										+ k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, "  + val_kpi
 										+ " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb
@@ -620,14 +620,14 @@ public class Rsl_Test_SysController {
 										+ " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb
 										+ "' and '" + dateFin + "' group by " + date + " ," + dimension);
 								ResultSet rs = ps.executeQuery();
-								System.out.println("no3");
+//								System.out.println("no3");
 								while (rs.next()) {
 									Rsl_test_sys blog = new Rsl_test_sys();
 									blog.setDate(rs.getString("date"));
 									blog.setIdKpi(rs.getFloat("Code_requete"));
 									blog.setVal_dim(rs.getString("val_dim"));
 									blog.setVal_kpi(rs.getFloat(alias_val_kpi));
-									System.out.println("dddddddd" + name_db);
+								
 									blog.setDatabase_name(name_db);
 									blog.setSysteme(name_db);
 
@@ -665,7 +665,7 @@ public class Rsl_Test_SysController {
 				}
 			}
 		}
-		System.out.println(rslt.size());
+//		System.out.println(rslt.size());
 		for (Rsl_test_sys rs : rslt) {
 
 			Rsl_test_sys r = new Rsl_test_sys();
@@ -687,7 +687,7 @@ public class Rsl_Test_SysController {
 			long kpi = Long.parseLong(s);
 			Kpi k = kpirepository.findById(kpi).get();
 
-			System.out.println("voilaaa");
+//			System.out.println("voilaaa");
 			Connection conn = null;
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
@@ -820,7 +820,7 @@ public class Rsl_Test_SysController {
 			long startTime3 = System.currentTimeMillis();
 
 			// ResultSet rs6 = ps6.executeQuery();
-			System.out.println("bf");
+//			System.out.println("bf");
 
 			while (rs.next()) {
 				System.out.println("pap");
@@ -1341,7 +1341,7 @@ public class Rsl_Test_SysController {
                             blog.setVal_dim(rs.getString("val_dim"));
                             blog.setVal_kpi(rs.getFloat(alias_val_kpi));
                             blog.setSysteme("SqlServer");
-                            System.out.println("hetha  tee sqlserver"+blog);
+//                            System.out.println("hetha  tee sqlserver"+blog);
                             rslt.add(blog);
                         }
 
@@ -1385,7 +1385,7 @@ public class Rsl_Test_SysController {
                                 blog.setVal_dim(rs.getString("val_dim"));
                                 blog.setVal_kpi(rs.getFloat(alias_val_kpi));
                                 blog.setSysteme("Postgres");
-                                System.out.println("hetha  tee post"+blog);
+//                                System.out.println("hetha  tee post"+blog);
                                 rslt.add(blog);
                             }
 
@@ -1415,7 +1415,7 @@ public class Rsl_Test_SysController {
                 }}
             }
         }
-        System.out.println(rslt.size());
+//        System.out.println(rslt.size());
         for (Rsl_test_sys rs : rslt){
 
             Rsl_test_sys r= new Rsl_test_sys();
@@ -1794,43 +1794,11 @@ public class Rsl_Test_SysController {
 				blog.setNbreRecordOk(rs.getInt("nbre_record_ok"));
 				blog.setDatabase1(rs.getString("Database1"));
 				blog.setDatabase2(rs.getString("Database2"));
-//				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-//				Date dateobj = new Date();
-//				
-//			
-//				
-//				int j = 0;
-//
-//					
-//				int i1 = 0;
-//		
-//
-//                if (rs.getInt("gap") > k.getSeuil_gap()) {
-//                	i1 = i1+1 ;
-//            	blog.setNbreRecordNotOk(rs.getInt("nbreRecordNotOk") + i1);}
-//
-//				if (rs.getInt("gap") < k.getSeuil_gap()) {
-//					j = j + 1;
-//					
-//			
-//				
-//				
-//					blog.setNbreRecordOk(rs.getInt("nbreRecordOk") + j);
-//				}
-//				
-//				
-//			
-//			
-//            
-//				blog.setGap(rs.getFloat("gap"));
-//				java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
-//				BigDecimal bigD = new BigDecimal(
-//						(rs.getInt("gap") * 100) / (Math.max(rs.getDouble("val4"), rs.getDouble("val3"))));
-//				blog.setGAP_par_100(dff.format(bigD));			
+			
 
 				rslt2.add(blog);
 			
-				System.out.println("aaaaaarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaa");
+
 			}
 			for (Vue_Detaillé r : rslt2) {
 				vue_detailsRepository.save(r);	
@@ -1860,130 +1828,8 @@ public class Rsl_Test_SysController {
 		Database d2 = dbrepository.findDatabaseById(db2);
 
         List<Rsl_test_sys> rslt = new ArrayList<Rsl_test_sys>();
-//        String[] kpis= null;
-//		for (String s : kpis) {
-//            long kpi = Long.parseLong(s);
-//            Kpi k = kpirepository.findById(kpi).get();
-//
-//            Requete r1 = new Requete();
-//            for (Requete r : k.getRequetess()) {
-//                if (r1 != r) {
-//                    r1 = r;
-//
-//                    if (dbrepository.findDatabaseById(db1).equals(r.getId_databasee())){  //HEEEEEEEEEEEEEEEEEEEEERE !
-//
-//                        if (r.getId_databasee().getSystem().equals("SqlServer")) {
-//
-//
-//                        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-//
-//                        Connection con = DriverManager.getConnection("jdbc:sqlserver://localhost:" + r.getId_databasee().getPort() +
-//                                        ";databaseName=" + r.getId_databasee().getName()
-//                                , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
-//
-//                        String date = r.getDate();
-//                        String copr = r.getCopr();
-//                        String val_kpi = r.val_kpi;
-//                        String alias_val_kpi = r.val_kpi_alias;
-//
-//
-//
-//                        List<Dimension> dimss = r.getDims();
-//                        String dimension = " ";
-//                        for (Dimension d : dimss) {
-//                            if (d == dimss.get(dimss.size() - 1)) {
-//                                dimension = dimension + d.getVal_dim();
-//                            } else {
-//                                dimension = dimension + d.getVal_dim() + " +'|'+ ";
-//                            }
-//                        }
-////                        System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb + "' and " + dateFin + " group by " + date + " ," + dimension);
-//
-////                        PreparedStatement ps = con.prepareStatement("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by " + date + " ," + dimension);
-////                        ResultSet rs = ps.executeQuery();
-////
-////                        while (rs.next()) {
-////                            Rsl_test_sys blog = new Rsl_test_sys();
-////                            blog.setDate(rs.getString("date"));
-////                            blog.setIdKpi(rs.getFloat("Code_requete"));
-////                            blog.setVal_dim(rs.getString("val_dim"));
-////                            blog.setVal_kpi(rs.getFloat(alias_val_kpi));
-////                            blog.setSysteme("SqlServer");
-////                            System.out.println("hetha  tee sqlserver"+blog);
-////                            rslt.add(blog);
-////                        }
-//
-//                      con.close();
-//                    } else if (r.getId_databasee().getSystem().equals("Postgres")) {
-//
-//
-//                        try {
-//                            Connection conn = null;
-//                            Class.forName("org.postgresql.Driver");
-//                            conn = DriverManager.getConnection("jdbc:postgresql://localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName()
-//                                    , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
-//
-//                            String date = r.getDate();
-//                            String copr = r.getCopr();
-//                            String val_kpi = r.val_kpi;
-//                            String alias_val_kpi = r.val_kpi_alias;
-//
-//
-//
-//
-//
-//                            List<Dimension> dimss = r.getDims();
-//                            String dimension = " ";
-//                            for (Dimension d : dimss) {
-//                                if (d == dimss.get(dimss.size() - 1)) {
-//                                    dimension = dimension + d.getVal_dim();
-//                                } else {
-//                                    dimension = dimension + d.getVal_dim() + " ||'|'|| ";
-//                                }
-//                            }
-////                            System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb + "' and " + dateFin + " group by " + date + " ," + dimension);
-//
-////                            PreparedStatement ps = conn.prepareStatement("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by " + date + " ," + dimension);
-////                            ResultSet rs = ps.executeQuery();
-//
-////                            while (rs.next()) {
-////                                Rsl_test_sys blog = new Rsl_test_sys();
-////                                blog.setDate(rs.getString("date"));
-////                                blog.setIdKpi(rs.getFloat("Code_requete"));
-////                                blog.setVal_dim(rs.getString("val_dim"));
-////                                blog.setVal_kpi(rs.getFloat(alias_val_kpi));
-////                                blog.setSysteme("Postgres");
-////                                System.out.println("hetha  tee post"+blog);
-////                                rslt.add(blog);
-////                            }
-//
-//                           conn.close();
-//                        } catch (Exception e) {
-//                            System.out.println("Failed to create JDBC dateDeb connection " + e.toString() + e.getMessage());
-//                        }
-//                    } else if (r.getId_databasee().getSystem().equals("Oracle"))
-//                        try {
-//
-//                            Class.forName("oracle.jdbc.OracleDriver");
-//                            String url = "jdbc:oracle:thin:@localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName()
-//                                    + r.getId_databasee().getUsername() + r.getId_databasee().getPassword();
-//                            System.out.println();
-//                            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:" + r.getId_databasee().getPort() + "/" + r.getId_databasee().getName()
-//                                    , r.getId_databasee().getUsername(), r.getId_databasee().getPassword());
-//
-//
-//                        } catch (Exception e) {
-//                            System.out.println("Failed to create JDBC dateDeb connection " + e.getMessage());
-//                        }
-//                    else {
-//
-//                        System.out.println("no connexions");
-//                    }
-//
-//                }}
-//            }
-//        }
-        System.out.println(rslt.size());
+
+//        System.out.println(rslt.size());
         for (Rsl_test_sys rs : rslt){
 
             Rsl_test_sys r= new Rsl_test_sys();
@@ -2040,7 +1886,7 @@ public class Rsl_Test_SysController {
             				+ "		left outer join kpi k on k.id_kpi=a.Code_requete   " );
             ResultSet rs8 = ps8.executeQuery();
             while (rs1.next()&&rs2.next()&&rs3.next()&&rs5.next()&&rs6.next()&&rs7.next()&&rs8.next()) {
-                System.out.println("pap");
+//                System.out.println("pap");
 
 //
 //                Vue_Globale blog = new Vue_Globale();
@@ -2180,19 +2026,19 @@ public class Rsl_Test_SysController {
 									dimension = dimension + d.getVal_dim() + " +'|'+ ";
 								}
 							}
-							System.out.println(dimension);
+//							System.out.println(dimension);
 							PreparedStatement ps00 = con.prepareStatement("delete from database1 where id_kpi= " + k.id_kpi + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
 							int rs0 = ps00.executeUpdate();	
 							System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ,"
 									+ dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr
 									+ " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by "
 									+ date + " ," + dimension);
-							System.out.println("no1");
+//							System.out.println("no1");
 							PreparedStatement ps = con.prepareStatement("Select " + date + " as date, " + k.getId_kpi()
 									+ " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as "
 									+ alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb + "' and '"
 									+ dateFin + "' group by " + date + " ," + dimension);
-							System.out.println("no2");
+//							System.out.println("no2");
 							ResultSet rs = ps.executeQuery();
 
 							while (rs.next()) {
@@ -2230,26 +2076,26 @@ public class Rsl_Test_SysController {
 										dimension = dimension + d.getVal_dim() + " ||'|'|| ";
 									}
 								}
-								System.out.println("no4");
-								System.out.println(dimension);
-								System.out.println("Select " + date + " as date, " + k.getId_kpi()
-										+ " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as "
-										+ alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb
-										+ "' and " + dateFin + " group by " + date + " ," + dimension);
+//								System.out.println("no4");
+//								System.out.println(dimension);
+//								System.out.println("Select " + date + " as date, " + k.getId_kpi()
+//										+ " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as "
+//										+ alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb
+//										+ "' and " + dateFin + " group by " + date + " ," + dimension);
 
 								PreparedStatement ps = conn.prepareStatement("Select " + date + " as date, "
 										+ k.getId_kpi() + " as Code_requete ," + dimension + " as val_dim, " + val_kpi
 										+ " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb
 										+ "' and '" + dateFin + "' group by " + date + " ," + dimension);
 								ResultSet rs = ps.executeQuery();
-								System.out.println("no3");
+//								System.out.println("no3");
 								while (rs.next()) {
 									Database1 blog = new Database1();
 									blog.setDate(rs.getString("date"));
 									blog.setIdKpi(rs.getFloat("Code_requete"));
 									blog.setVal_dim(rs.getString("val_dim"));
 									blog.setVal_kpi(rs.getFloat(alias_val_kpi));
-									System.out.println("dddddddd" + name_db);
+//									System.out.println("dddddddd" + name_db);
 									blog.setDatabase_name(name_db);
 									blog.setSysteme(name_db);
 							
@@ -2288,7 +2134,7 @@ public class Rsl_Test_SysController {
 				}
 			}
 		}
-		System.out.println(rslt.size());
+		System.out.println("Le nombre des valeurs trouvés est  " +rslt.size());
 		
 //		for (Database1 rs : rslt) {
 //	
@@ -2312,7 +2158,7 @@ public class Rsl_Test_SysController {
 			long kpi = Long.parseLong(s);
 			Kpi k = kpirepository.findById(kpi).get();
 
-			System.out.println("voilaaa");
+//			System.out.println("voilaaa");
 			Connection conn = null;
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
@@ -2351,7 +2197,7 @@ public class Rsl_Test_SysController {
 			ResultSet rs4 = ps4.executeQuery();
 			long startTime2 = System.currentTimeMillis();
 		long startTime3 = System.currentTimeMillis();
-			System.out.println("bf");
+//			System.out.println("bf");
 
 //			while (rs.next()) {
 //		
@@ -2399,7 +2245,7 @@ public class Rsl_Test_SysController {
 			long kpi = Long.parseLong(s);
 			Kpi k = kpirepository.findById(kpi).get();
 
-			System.out.println("voilaaa");
+//			System.out.println("voilaaa");
 			Connection conn = null;
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
@@ -2437,7 +2283,7 @@ public class Rsl_Test_SysController {
 			ResultSet rs4 = ps4.executeQuery();
 			long startTime2 = System.currentTimeMillis();
 		long startTime3 = System.currentTimeMillis();
-			System.out.println("bf");
+//			System.out.println("bf");
 
 //			while (rs.next()) {
 //		
@@ -2516,12 +2362,12 @@ public class Rsl_Test_SysController {
 									dimension = dimension + d.getVal_dim() + " +'|'+ ";
 								}
 							}
-							System.out.println(dimension);
-
-							System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ,"
-									+ dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr
-									+ " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by "
-									+ date + " ," + dimension);
+//							System.out.println(dimension);
+//
+//							System.out.println("Select " + date + " as date, " + k.getId_kpi() + " as Code_requete ,"
+//									+ dimension + " as val_dim, " + val_kpi + " as " + alias_val_kpi + " " + copr
+//									+ " and " + date + " between '" + dateDeb + "' and '" + dateFin + "' group by "
+//									+ date + " ," + dimension);
 							System.out.println("no1");
 							PreparedStatement ps = con.prepareStatement("Select " + date + " as date, " + k.getId_kpi()
 									+ " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as "
@@ -2565,8 +2411,8 @@ public class Rsl_Test_SysController {
 										dimension = dimension + d.getVal_dim() + " ||'|'|| ";
 									}
 								}
-								System.out.println("no4");
-								System.out.println(dimension);
+//								System.out.println("no4");
+//								System.out.println(dimension);
 								System.out.println("Select " + date + " as date, " + k.getId_kpi()
 										+ " as Code_requete ," + dimension + " as val_dim, " + val_kpi + " as "
 										+ alias_val_kpi + " " + copr + " and '" + date + "' between '" + dateDeb
@@ -2577,14 +2423,14 @@ public class Rsl_Test_SysController {
 										+ " as " + alias_val_kpi + " " + copr + " and " + date + " between '" + dateDeb
 										+ "' and '" + dateFin + "' group by " + date + " ," + dimension);
 								ResultSet rs = ps.executeQuery();
-								System.out.println("no3");
+//								System.out.println("no3");
 								while (rs.next()) {
 									Database2 blog = new Database2();
 									blog.setDate(rs.getString("date"));
 									blog.setIdKpi(rs.getFloat("Code_requete"));
 									blog.setVal_dim(rs.getString("val_dim"));
 									blog.setVal_kpi(rs.getFloat(alias_val_kpi));
-									System.out.println("dddddddd" + name_db);
+//									System.out.println("dddddddd" + name_db);
 									blog.setDatabase_name(name_db);
 									blog.setSysteme(name_db);
 							
@@ -2646,7 +2492,7 @@ public class Rsl_Test_SysController {
 			long kpi = Long.parseLong(s);
 			Kpi k = kpirepository.findById(kpi).get();
 
-			System.out.println("voilaaa");
+//			System.out.println("voilaaa");
 			Connection conn = null;
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
@@ -2682,10 +2528,10 @@ public class Rsl_Test_SysController {
 
 
 
-			System.out.println("bf");
+//			System.out.println("bf");
 
 			while (rs.next()) {
-				System.out.println("pap");
+//				System.out.println("pap");
 
 				Vue_Globale blog = new Vue_Globale();
 				blog.setDate(rs.getString("Date"));
@@ -2729,7 +2575,7 @@ public class Rsl_Test_SysController {
 			long kpi = Long.parseLong(s);
 			Kpi k = kpirepository.findById(kpi).get();
 
-			System.out.println("voilaaa");
+//			System.out.println("voilaaa");
 			Connection conn = null;
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
@@ -2764,7 +2610,7 @@ public class Rsl_Test_SysController {
 
 
 
-			System.out.println("bf");
+//			System.out.println("bf");
 
 //			while (rs.next()) {
 //				System.out.println("pap");
@@ -2831,12 +2677,12 @@ public class Rsl_Test_SysController {
 				blog.setVal_kpi2(rs.getFloat("val4"));
 				 blog.setName_kpi(rs.getString("name"));
 				 blog.setVal_dim(rs.getString("dim"));
-				 System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+		
 		            BigDecimal bd = new BigDecimal(rs.getLong("val4"));
 		            DecimalFormat f = new DecimalFormat("##.##");  // this will helps you to always keeps in two decimal places
 		           
-		            System.out.println(f.format(rs.getFloat("val4"))); 
-	                System.out.println(bd.setScale(2,BigDecimal.ROUND_UNNECESSARY));
+//		            System.out.println(f.format(rs.getFloat("val4"))); 
+//	                System.out.println(bd.setScale(2,BigDecimal.ROUND_UNNECESSARY));
 				 
 				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 				Date dateobj = new Date();
@@ -2874,7 +2720,7 @@ public class Rsl_Test_SysController {
 
 				rslt202.add(blog);
 			
-				System.out.println("aaaaaarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrraaaa");
+
 			}
 			for (Vue_Detaillé r : rslt202) {
 				vue_detailsRepository.save(r);	
@@ -2938,7 +2784,7 @@ public class Rsl_Test_SysController {
 	                            blog.setVal_dim(rs.getString("val_dim"));
 	                            blog.setVal_kpi(rs.getFloat(alias_val_kpi));
 	                            blog.setSysteme("SqlServer");
-	                            System.out.println("hetha  tee sqlserver"+blog);
+	                   
 	                            rslt1000.add(blog);
 	                        }
 
@@ -2982,7 +2828,7 @@ public class Rsl_Test_SysController {
 	                                blog.setVal_dim(rs.getString("val_dim"));
 	                                blog.setVal_kpi(rs.getFloat(alias_val_kpi));
 	                                blog.setSysteme("Postgres");
-	                                System.out.println("hetha  tee post"+blog);
+//	                                System.out.println("hetha  tee post"+blog);
 	                                rslt1000.add(blog);
 	                            }
 
@@ -3012,7 +2858,7 @@ public class Rsl_Test_SysController {
 	                }}
 	            }
 	        }
-	        System.out.println(rslt.size());
+	      
 	   
 		 List<Vue_Globale> rslt00 = new ArrayList<Vue_Globale>();
 	        for (String s : kpis) {
@@ -3022,25 +2868,10 @@ public class Rsl_Test_SysController {
 	            Class.forName("org.postgresql.Driver");
 	            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4"
 	                    , "postgres", "root");
-//	            PreparedStatement ps = conn.prepareStatement("select  k.name_kpi as name ,a.idkpi  Code_requete , a.date as Date , a.valeur_dim as dim , a.val_kpi as val3  , b.val_kpi  as val4 ,0 as nbreRecordOk ,0 as nbreRecordNotOk,abs(a.val_kpi - b.val_kpi) as gap from database1 a   \r\n"
-//						+"Full outer join database2 b  on  a.id_kpi = b.id_kpi and a.valeur_dim = b.valeur_dim and a.date = b.date\r\n"
-//						+"left outer join kpi k on a.id_kpi="+k.id_kpi+" \r\n"
-//						+"where a.id_kpi = k.id_kpi \r\n");
-
+	            
 	            long startTime = System.currentTimeMillis();
 
-	           PreparedStatement ps0 = conn.prepareStatement("delete from vue_globale where code_requete= " + k.getId_kpi() + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
-				int rs0 = ps0.executeUpdate();	
-	            PreparedStatement ps = conn.prepareStatement("Select date as Date , code_requete as Code_requete , name_kpi as name  from vue_detaille where Code_requete="+k.id_kpi +"  and date  between '" + dateDeb + "' and '" + dateFin + "'");
-	            ResultSet rs = ps.executeQuery();
-	            PreparedStatement ps1 = conn.prepareStatement("Select count(*) as nbreRecordOK from vue_detaille where Code_requete="+k.id_kpi +"  and date  between '" + dateDeb + "' and '" + dateFin + "' and nbre_record_ok = 1");
-	            ResultSet rs1 = ps1.executeQuery();
-	            PreparedStatement ps2 = conn.prepareStatement("Select count(*) as nbreRecordNotOk from vue_detaille where Code_requete="+k.id_kpi +"  and date  between '" + dateDeb + "' and '" + dateFin + "' and nbre_record_not_ok = 1");
-	            ResultSet rs2 = ps2.executeQuery();
-		        PreparedStatement ps3 = conn.prepareStatement("Select sum(val_kpi1) as val3 ,sum(val_kpi2) as val4 ,abs(sum(val_kpi1)- sum(val_kpi2)) as gap from vue_detaille where Code_requete="+k.id_kpi +"  and date  between '" + dateDeb + "' and '" + dateFin + "' ");
-	            ResultSet rs3 = ps3.executeQuery();
-	            PreparedStatement ps4 = conn.prepareStatement("select seuil as seuil , seuil_gap as seuil_gap , seuil_data_quality as seuil_dataQuality from  kpi  where id_kpi="+k.id_kpi +"" );
-	            ResultSet rs4 = ps4.executeQuery();	
+	        
 	            PreparedStatement ps007 = conn.prepareStatement(
 	            		  "			SELECT Code_requete as Code_requete\r\n"
 	            		+ "        ,sum(val_kpi1) AS Total_System_1\r\n"
@@ -3061,20 +2892,15 @@ public class Rsl_Test_SysController {
 	            		+ "LEFT JOIN kpi K on A.code_requete = K.id_kpi\r\n"
 	            		+ "WHERE code_requete = "+k.id_kpi +"   AND DATE BETWEEN '" + dateDeb +"' AND '" + dateFin +"'\r\n"
 	            		+ "GROUP BY code_requete, K.name_kpi, K.seuil , K.seuil_data_quality, K.seuil_gap \r\n");
-	        
-	            
-	            
-	            
+	       
 
-	            
-	            
-	            ResultSet rs007 = ps007.executeQuery();
-//	            PreparedStatement ps5 = conn.prepareStatement("select date as datedeb from vue_detaille where date LIKE " +dateDeb+ " "  );
-//	            ResultSet rs5 = ps5.executeQuery();
+	        	  
+	           
+	        	  ResultSet rs007 = ps007.executeQuery();
 	            while (rs007.next()) {
-	                System.out.println("pap");
+//	                System.out.println("pap");
 	         
-	                System.out.println(rs007.getString("acceptation"));
+//	                System.out.println(rs007.getString("acceptation"));
 
 	                Vue_Globale blog = new Vue_Globale();
 	           

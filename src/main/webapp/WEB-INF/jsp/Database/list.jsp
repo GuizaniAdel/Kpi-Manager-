@@ -204,7 +204,7 @@
                            
                             
                             
-                            <th class="column-title no-link last"><span class="nobr"></span>
+                            <th class="column-title no-link last"><span class="nobr">Delete Database</span>
                               <th class="column-title"> Verify Connexion </th>
                             
                           </tr>

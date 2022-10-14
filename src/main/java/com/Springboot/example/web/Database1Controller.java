@@ -373,7 +373,7 @@ public class Database1Controller {
 		
 			PreparedStatement ps = conn.prepareStatement(
 					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val3 , \r\n"
-					+ "							  k.name_kpi as name, a.system as system from database1 a ,database1 b ,kpi k\r\n"
+					+ "							  k.name_kpi as name, a.system as system from database1 a ,kpi k\r\n"
 					+ "							  where a.idkpi = k.id_kpi \r\n"
 					
 			);

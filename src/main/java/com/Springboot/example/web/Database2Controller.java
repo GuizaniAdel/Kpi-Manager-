@@ -285,8 +285,8 @@ public class Database2Controller {
 	
 
 			PreparedStatement ps = conn.prepareStatement(
-					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val4 , \r\n"
-					+"  k.name_kpi as name from database2 a ,database2 b ,kpi k \r\n"
+					"select DISTINCT b.idkpi Code_requete ,b.valeur_dim as dim, b.date as Date,b.val_kpi as val4 , \r\n"
+					+"  k.name_kpi as name from database2 b ,kpi k \r\n"
 					+"  where a.idkpi = k.id_kpi \r\n"
 							
 

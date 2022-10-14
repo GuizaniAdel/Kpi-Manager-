@@ -2179,7 +2179,7 @@ public class Rsl_Test_SysController {
 		
 			PreparedStatement ps = conn.prepareStatement(
 					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val3 , \r\n"
-					+ "							  k.name_kpi as name from database1 a ,database1 b ,kpi k\r\n"
+					+ "							  k.name_kpi as name from database1 a ,kpi k\r\n"
 					+ "							  where a.idkpi = k.id_kpi \r\n"
 					
 			);
@@ -2265,7 +2265,7 @@ public class Rsl_Test_SysController {
 		
 			PreparedStatement ps = conn.prepareStatement(
 					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val3 , \r\n"
-					+ "							  k.name_kpi as name from database1 a ,database1 b ,kpi k\r\n"
+					+ "							  k.name_kpi as name from database1 a ,kpi k\r\n"
 					+ "							  where a.idkpi = k.id_kpi \r\n"
 					
 			);
@@ -2511,9 +2511,9 @@ public class Rsl_Test_SysController {
 	
 
 			PreparedStatement ps = conn.prepareStatement(
-					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val4 , \r\n"
-					+"  k.name_kpi as name from database2 a ,database2 b ,kpi k \r\n"
-					+"  where a.idkpi = k.id_kpi \r\n"
+					"select DISTINCT b.idkpi Code_requete ,b.valeur_dim as dim, b.date as Date,b.val_kpi as val4 , \r\n"
+					+"  k.name_kpi as name from database2 b ,kpi k \r\n"
+					+"  where b.idkpi = k.id_kpi \r\n"
 							
 
 			);
@@ -2593,9 +2593,9 @@ public class Rsl_Test_SysController {
 	
 
 			PreparedStatement ps = conn.prepareStatement(
-					"select DISTINCT a.idkpi Code_requete ,a.valeur_dim as dim, a.date as Date,a.val_kpi as val4 , \r\n"
-					+"  k.name_kpi as name from database2 a ,database2 b ,kpi k \r\n"
-					+"  where a.idkpi = k.id_kpi \r\n"
+					"select DISTINCT b.idkpi Code_requete ,b.valeur_dim as dim, b.date as Date,b.val_kpi as val4 , \r\n"
+					+"  k.name_kpi as name from database2 b ,kpi k \r\n"
+					+"  where b.idkpi = k.id_kpi \r\n"
 							
 
 			);
@@ -2910,7 +2910,7 @@ public class Rsl_Test_SysController {
 	                blog.setCode_requete(rs007.getLong("Code_requete"));
 	                blog.setVal_kpi1(rs007.getFloat("Total_System_1"));
 	                blog.setVal_kpi2(rs007.getFloat("Total_System_2"));
-	              	blog.setGap((long)rs007.getInt("gap_Total"));
+	              	blog.setGap(rs007.getLong("gap_Total"));
 	              	blog.setGAP_par_100(rs007.getString("gap_par_100"));
 	              	blog.setNbreRecordNotOk(rs007.getInt("nbre_record_not_ok"));
 	            	blog.setNbreRecordOk(rs007.getInt("nbre_record_ok"));

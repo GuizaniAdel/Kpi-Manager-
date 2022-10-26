@@ -115,8 +115,8 @@ document.querySelector('p.bleuu').textContent = document.getElementById('dateFin
                        <span class="fa fa-chevron-down"></span></a>
                        <ul class="nav child_menu" style="display: block;">
                        <li  ><a href="resultat">Lanch Script</a>
-                       <li class="current-page" ><a >Vue Details</a>
-                        <li class="current-page" ><a >Vue Global</a>
+                      <li><a href="resultat5" >Vue Global</a>
+                        <li><a href="resultat4" >Vue Details</a>
                        
                        
                        </ul>

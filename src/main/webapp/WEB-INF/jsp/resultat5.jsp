@@ -1,44 +1,66 @@
-<%@ page import ="java.sql.*" %>
-
+<%@ page import="com.Springboot.example.service.DbServiceImpl" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="stag" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
-
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
   <head>
+  <script type="text/javascript">
+
+
+function validerDate(){
+alert(document.getElementById('dateDeb').value);
+var dateDeb = document.getElementById('dateDeb').value;
+document.querySelector('p.bleuu').textContent = document.getElementById('dateFin').value;
+//Sélectionne le premier paragraphe du class bleuu du document et modifie son texte
+
+};
+
+</script>
+  <style>
+ h1 {
+	color: red;
+}
+</style>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
       <title>DWH Test Automatisation</title>
 
-  <!-- Bootstrap -->
+
+    <!-- Bootstrap -->
      <link href="<c:url value="/resources/vendors/bootstrap/dist/css/bootstrap.min.css"/>" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="<c:url value="/resources/vendors/font-awesome/css/font-awesome.min.css"/>" rel="stylesheet">
     <!-- NProgress -->
     <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
-    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <link href="<c:url value="/resources/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css"/>" rel="stylesheet">
+    
     <!-- bootstrap-daterangepicker -->
     <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
         <!-- iCheck -->
     <link href="<c:url value="/resources/vendors/iCheck/skins/flat/green.css"/>" rel="stylesheet">
     
-        <!-- Datatables -->
+         <!-- Datatables -->
     <link href="<c:url value="/resources/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css"/>" rel="stylesheet">
      <link href="<c:url value="/resources/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css"/>" rel="stylesheet">
  
     <!-- Custom Theme Style -->
     <link href="<c:url value="/resources/build/css/custom.min.css"/>" rel="stylesheet">
+
   </head>
 
-  <body class="nav-md">
+  <body  class="nav-md">
+
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -62,19 +84,19 @@
             <br />
 
             <!-- sidebar menu -->
-            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <h3>General</h3>
-          <ul class="nav side-menu " class="toggled">
+                <ul class="nav side-menu " class="toggled">
                   
-                    <li>
+                   <li>
                     <a><i class="fa fa-line-chart"></i>Manage KPIs/Requetes
                     <span class="fa fa-chevron-down"></span></a>
                      <ul class="nav child_menu" style="display: block;">
                        <li ><a href="listRequetes">List Requetes</a>
                        </li>
-                       <li class="current-page" ><a href="listKpis">List Kpis</a>
-                        <li  ><a href="manage_kpi ">Add Kpis & Requetes</a>
+                       <li  ><a href="listKpis">List Kpis</a>
+                        <li  ><a href="manage_kpi">Add Kpis & Requetes</a>
                        </li>
                     </ul>
                     </li>
@@ -88,11 +110,13 @@
                        </li>
                     </ul>
                       </li>
-                      <li>
+                       <li>
                       <a><i class="fa fa-bolt"></i>Resultat
                        <span class="fa fa-chevron-down"></span></a>
                        <ul class="nav child_menu" style="display: block;">
-                       <li  ><a href="resultat">Lanch Script</a>
+                    <li  ><a href="resultat">Lanch Script</a>
+                       <li ><a href="resultat5" > Vue Global</a>
+                        <li><a href="resultat4" >Vue Details</a>
                        
                        </ul>
                       </li>
@@ -107,7 +131,7 @@
             
           </div>
         </div>
-    
+
         <!-- top navigation -->
         <div class="top_nav">
             <div class="nav_menu">
@@ -118,7 +142,7 @@
                 <ul class=" navbar-right">
                   <li class="nav-item dropdown open" style="padding-left: 15px;">
                     <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                     <img src="<c:url value="/resources/images/img.jpg"/>" alt="">${pageContext.request.userPrincipal.name}
+                      <img src="<c:url value="/resources/images/img.jpg"/>" alt="">${pageContext.request.userPrincipal.name}
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item"  href="javascript:;"> Profile</a>
@@ -134,13 +158,12 @@
             </div>
           </div>
         <!-- /top navigation -->
-
-        <!-- page content -->
-         <div class="right_col" role="main">
+                <!-- page content -->
+         <div class="right_col" role="main" >
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3> KPI</h3>
+                <h3>Manage KPIs</h3>
               </div>
 
               <div class="title_right">
@@ -156,106 +179,149 @@
             </div>
 
             <div class="clearfix"></div>
-
-            <div class="row">
-       <div class="col-md-12 col-sm-12  ">
+          <div class="row">
+              <div class="col-md-12 col-sm-12  ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>List Kpis </h2>
+                    <h2>Resultat</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                           
-                          </div>
-                      </li>
+                    
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-
                   <div class="x_content">
+                  
+                  <h2>Download Data File</h2>
+                  <form id="demo-form2" data-parsley-validate="" method="get" action ="Vue_detaille" class="form-horizontal form-label-left"   >
 
-                   
-                         <div class="row">
+            <div class="row">
                           <div class="col-sm-12">
-                            <div class="card-box table-responsive">
-                        		
-          <table id="tableKpi" class="table table-striped table-bordered" style="width:100%">                          
+                       <div class="card-box table-responsive">
+
+<!--       <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%"> -->
+<!--                     <thead> -->
+<!--                         <tr role="row"> -->
+<!--                           <th>Name_kpi</th> -->
+<!--                      <th>Seuil Kpi</th> -->
+<!--                           <th >Seuil GAP</th> -->
+<!--                           <th>Seuil Data Quality</th> -->
+<!--                             </tr> -->
+<!--                                    </thead> -->
+<!--                                       <tbody> -->
+<%--                                       <c:forEach items="${rslt}" var="u"> --%>
+                                     
+<!--                          <tr> -->
+<%--                           <td>${u. getName_kpi()}</td>    --%>
+<%--                          <td>${u.getSeuil()}</td> --%>
+<%--                         <td>${u.getSeuil_gap()}</td> --%>
+<%--                         <td>${u. getSeuil_dataQuality()}</td>  --%>
+<!--                              </tr> -->
                         
-                         <thead>
-                        <tr>
-                          <th>Code Requete</th>
-                          <th>Name KPI</th>
-                          <th>Subject Area</th>
-                          <th>Type</th>
-                          <th>Seuil</th>
-                          <th> Update</th>
-                           <th> Add requete</th>
-                              <th> Delete Kpi</th>
+<%--                          </c:forEach> --%>
+<!--                       </tbody> -->
+<!--                     </table> -->
+                 
+
+                               <table id="resultat2" class="table table-bordered" style="width:100%">
+                      <thead>
+                        <tr role="row">
+                         <th></th>
+                         <th>Date Deb</th>
+                         <th>Date Fin</th>
+                   <%--     <th>Date</th>--%>  
+                          <th >Code_requete</th>
+                          <th>Name_kpi</th>
+                          <th>Total Kpi in DB1</th>
+                          <th>Total Kpi in DB2</th>
+                          <th> GAP</th>
+                          <th> GAP %</th>
+                          <th> Data Quality</th>
+                            <th> Acceptation</th>
+                          <%--  <th> Number Records <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></th>
+                           <th> Number Records <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%></th>--%>
+                          <th> Number Records OK</th>
+                          <th> Number Records Not OK</th>
+                         <%--  <th> Not Found in  <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db1"))).getName()%></th>
+                          <th> Not Found in  <%= DbServiceImpl.getRecordById(Long.parseLong(request.getParameter("db2"))).getName()%></th>--%>
+                          <th> Temps Exec</th>
+                          <th> Date Exec</th> 
+                       
                         </tr>
                       </thead>
-                       <tbody>
-                  <c:forEach items="${listKpis}"  var="emp">
-           <tr>
-           <td>${emp.id_kpi}</td>
-           <td>${emp.name_kpi}</td>
-           <td>${emp.subject_area}</td>
-           <td>${emp.type}</td>
-           <td> ${emp.seuil}</td>
-          <td>
 
-              <a type="submit" href ="<c:url value='/editkpi/${emp.id_kpi}' />" class="btn btn-dark btn-xs">
-                  <i class="fa fa-pencil"></i> </a>
-                  
-          <input type="text" value="${emp.id_kpi}" name="kpiId" class="flat" hidden="true" ></td>
-         <td style="align-items: center">
-             <a type="submit"  href ="<c:url value='/addRequete/${emp.id_kpi}' />" class="btn btn-success btn-xs">
 
-             <i class="fa fa-plus-square"></i> </a> </td>
-               <td>
-             <a type="submit"  href ="<c:url value='/deletekpi/${emp.id_kpi}' />" class="btn btn-danger btn-xs">
-                <i class="fa fa-pencil"></i>
-                </a> 
-            </td>
+                      <tbody>
+                        <c:forEach items="${rslt}" var="u">
+                        
+                         <tr>
+                          <td class="a-center ">
+           <input type="checkbox" value="${u.getId()}" name="kpiss" class="flat" >
         
-           
-       </tr>
-       </c:forEach>
-                       </tbody>
-                       </table>
-                       
-                       </div>
-                       </div>
-                       </div>
-                       </div>
-         
-                    </div>
-							
-						
-                  </div>
-                </div>
-              </div>
-                    </div>
-                    </div>
-                    
-                   
-        <!-- /page content -->
+           </td>
+              			<td>${u.getDateDeb()}</td>
+              			<td>${u.getDateFin()}</td>
+                       <%--  <td>${u.getDate()}</td>--%>  
+                        <td>${u.getCode_requete()}</td>
+                        <td>${u. getName_kpi()}</td>                       
+                    	 <td><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${u.getVal_kpi1()}" /></td> 
+                       	 <td><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${u.getVal_kpi2()}" /></td> 
+<%--                        	 <td>${u.getVal_kpi1()}</td> --%>
+<%--                          <td>${u.getVal_kpi2()}</td> --%>
+                         <td>${u.getGap()} </td> 
+                                <td><fmt:formatNumber type = "number" maxFractionDigits = "2" value = "${u.getGAP_par_100()}" />% </td>
+                         
+<%--                          <td> ${u.getGAP_par_100()}% </td> --%>
+                        <td>${u.getDataQualite()}% </td>
+                        <td>${u.getAcceptation()} </td>
+<%--                              <c:if test="${u.acceptation=='OK'}"> --%>
+<%--                              <td> <span style='background-color:#00FF00;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td> --%>
+<%--                              </c:if> --%>
+<%--                              <c:if test="${u.acceptation=='NotOk'}"> --%>
+
+<%--                                  <td> <span style='background-color:#F88;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td> --%>
+
+<%--                              </c:if> --%>
+<%--                              <c:if test="${u.acceptation=='OK partiel'}"> --%>
+<%--                                  <td> <span style='background-color:#90EE90;display:block;width:${u.getAcceptation()}%'>${u.acceptation}</span> </td> --%>
+<%--                              </c:if> --%>
+                         <%--     <td>${u.getLoad1()}</td>
+                         <td>${u.getLoad2()} </td> --%>
+                          
+                             <td>${u.getNbreRecordOk()} </td>
+                              <td>${u.getNbreRecordNotOk()} </td>
+                       <%--         <td>${u.getFoundDB1()} </td>
+                                 <td>${u.getFoundDB2()} </td> --%>
+                               <td>${u.getTempsExec()} Ms</td>
+                               <td>${u.getDateExec()} </td> 
+                         </tr>
+                        
+                         </c:forEach>
+                      </tbody>
+                    </table>
+                  
    
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-          
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
-
-
-      <!-- jQuery -->
+                     </div>
+                     </div>     
+                        
+ 
+                    </form>
+                   
+                  
+                  </div>
+                      
+           $
+                  </div>
+                  </div>
+                  
+                  </div>
+                  </div>
+                 
+         
+ <!-- jQuery -->
 
     <script src="<c:url value="/resources/vendors/jquery/dist/jquery.min.js"/>"></script>
     <!-- Bootstrap -->
@@ -311,15 +377,7 @@
      <script src="<c:url value="/resources/vendors/jszip/dist/jszip.min.js"/>"></script>
 
  <script src="<c:url value="/resources/vendors/pdfmake/build/pdfmake.min.js"/>"></script>
-         <!-- bootstrap-daterangepicker -->
-              <script src="<c:url value="/resources/vendors/moment/min/moment.min.js"/>"></script>
-              <script src="<c:url value="/resources/vendors/bootstrap-daterangepicker/daterangepicker.js"/>"></script>
-
-
-
-
-     <script src="<c:url value="/resources/vendors/validator/multifield.js"/>"></script>
-     <script src="<c:url value="/resources/vendors/validator/validator.js"/>"></script>
+ <script src="<c:url value="/resources/vendors/pdfmake/build/vfs_fonts.js"/>"></script>
     <!-- jQuery Smart Wizard -->
 
      <script src="<c:url value="/resources/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"/>"></script>
@@ -329,38 +387,42 @@
   
     <!-- Custom Theme Scripts -->
     <script src="<c:url value="/resources/build/js/custom.min.js"/>"></script>
-    <script src="<c:url value="/resources/js/tablefilter.js"/>"></script>
     <!-- iCheck 1.0.1 -->
 <script src="https://almsaeedstudio.com/themes/AdminLTE/plugins/iCheck/icheck.min.js"></script>
-  <script type="text/javascript">
-  var filtersConfig = {
-	        base_path: 'tablefilter/',
-	        col_0:'none',
-	        col_1:'none',
-	        col_2:'none',
-	        col_3: 'none',
-	        col_4: 'none',
-	        col_5: 'none',
-	        col_6: 'none',
-	        popup_filters: true,
-	        auto_filter: {
-	            delay: 1100 //milliseconds
-	        },
-	        alternate_rows: true,
-	        rows_counter: true,
-	        btn_reset: true,
-	        status_bar: true,
-	        msg_filter: 'Filtering...',
-	        col_widths:[
-	            '125px', '90px', '100px',
-	            '90px', '90px', '90px',
-	            '90px', '90px', '90px'
-	        ]
-	    };
-	    var tf = new TableFilter('tableKpi', filtersConfig);
-	    tf.init();
-   $(document).ready(function() {
-        $('#tableKpi').DataTable( {
+ <script src="<c:url value="/resources/js/tablefilter.js"/>"></script>
+
+
+<script data-config="">
+
+             var filtersConfig = {
+        base_path: 'tablefilter/',
+        col_0:'none',
+        col_1:'select',
+        col_2:'select',
+        col_3: 'select',
+        col_4: 'select',
+        col_5: 'select',
+        col_6: 'none',
+        popup_filters: true,
+        auto_filter: {
+            delay: 1100 //milliseconds
+        },
+        alternate_rows: true,
+        rows_counter: true,
+        btn_reset: true,
+        status_bar: true,
+        msg_filter: 'Filtering...',
+        col_widths:[
+            '125px', '90px', '100px',
+            '90px', '90px', '90px',
+            '90px', '90px', '90px'
+        ]
+    };
+    var tf = new TableFilter('resultat2', filtersConfig);
+    tf.init();
+    
+    $(document).ready(function() {
+        $('#resultat2').DataTable( {
             dom: 'Bfrtip',
             buttons: [
                 
@@ -370,13 +432,7 @@
             ]
         } );
     } );
-   var data =   $('#tableKpi').DataTable.buttons.exportData( {
-       format: {
-           header: function ( data, columnIdx ) {
-               return columnIdx +': '+ data;
-           }
-       }
-   } );
-   </script>
-  </body>
+
+    </script>
+</body>
 </html>

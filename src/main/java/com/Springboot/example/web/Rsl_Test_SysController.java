@@ -1755,8 +1755,7 @@ public class Rsl_Test_SysController {
 //			Database d1 = dbrepository.findDatabaseById(db1);
 //			Database d2 = dbrepository.findDatabaseById(db2);
 
-			PreparedStatement ps0 = conn.prepareStatement("delete from vue_detaille where code_requete= " + k.getId_kpi() + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
-			int rs0 = ps0.executeUpdate();	
+		
 			PreparedStatement ps = conn
 					.prepareStatement(
 							  "        select coalesce (a.id_kpi,b.id_kpi ) as Code_requete\r\n"
@@ -1773,12 +1772,12 @@ public class Rsl_Test_SysController {
 							+ "        full outer join database2 b on a.id_kpi = b.id_kpi\r\n"
 							+ "        and a.valeur_dim = b.valeur_dim\r\n"
 							+ "        and a.date = b.date\r\n"            
-							+ "        AND a.id_kpi = "+k.id_kpi+ "AND B.id_kpi = " +k.id_kpi+ "\r\n"
-							+ "full outer join kpi K on K.id_kpi = coalesce (a.id_kpi,b.id_kpi )\r\n"
-							+ "WHERE 1=1 \r\n"
-							+ "and abs (coalesce (a.val_kpi,0) + coalesce (b.val_kpi,0))>0        \r\n"
-							+ "and coalesce (a.date, b.date) between '"  + dateDeb +"' and '"  + dateFin +"'  \r\n"
-							+ "GROUP BY  coalesce ( a.id_kpi, b.id_kpi ),  K.name_kpi ,a.system,b.system,coalesce (a.date, b.date),coalesce (a.valeur_dim,b.valeur_dim) ,  K.seuil\r\n");
+							+ "		   full outer join kpi K on K.id_kpi = coalesce (a.id_kpi,b.id_kpi )\r\n"
+							+ "        WHERE 1=1 \r\n"
+							+ "        AND coalesce(a.id_kpi,b.id_kpi) = "+k.id_kpi+" \r\n"
+							+ "        and abs (coalesce (a.val_kpi,0) + coalesce (b.val_kpi,0))>0        \r\n"
+							+ "        and coalesce (a.date, b.date) between '"  + dateDeb +"' and '"  + dateFin +"'  \r\n"
+							+ "        GROUP BY  coalesce ( a.id_kpi, b.id_kpi ),  K.name_kpi ,a.system,b.system,coalesce (a.date, b.date),coalesce (a.valeur_dim,b.valeur_dim) ,  K.seuil\r\n");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Vue_Detaillé blog = new Vue_Detaillé();
@@ -1809,7 +1808,122 @@ public class Rsl_Test_SysController {
 	
 		return "Vue_detaille";
 	}
+	///////////////////////////////////////////////
+	@GetMapping("/resultat4")
+	public String getAllRsltDetailles(Model model) throws Exception {
 
+		List<Vue_Detaillé> rslt2 = new ArrayList<>();
+
+
+
+			
+		
+
+		
+			Connection conn = null;
+
+
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4", "postgres", "root");
+//			Database d1 = dbrepository.findDatabaseById(db1);
+//			Database d2 = dbrepository.findDatabaseById(db2);
+	
+			PreparedStatement ps = conn
+					.prepareStatement(
+							  "        select * from vue_detaille\r\n"
+							);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Vue_Detaillé blog = new Vue_Detaillé();
+				blog.setDate(rs.getString("Date"));
+				blog.setCode_requete(rs.getLong("Code_requete"));
+				blog.setVal_kpi1(rs.getFloat("val_kpi1"));
+				blog.setVal_kpi2(rs.getFloat("val_kpi2"));
+				blog.setName_kpi(rs.getString("name_kpi"));
+				blog.setVal_dim(rs.getString("val_dim"));	
+				blog.setGap(rs.getFloat("gap"));
+				blog.setGAP_par_100(rs.getString("gap_par_100"));
+				blog.setNbreRecordNotOk(rs.getInt("nbre_record_not_ok"));
+				blog.setNbreRecordOk(rs.getInt("nbre_record_ok"));
+		
+			
+
+				rslt2.add(blog);
+			
+
+			}
+		
+
+			model.addAttribute("rslt", rslt2);
+		
+	
+		return "resultat4";
+	}
+//---------------------------------------------------------------------------------------------------------------------------------
+	
+	@GetMapping("/resultat5")
+	public String getGV(Model model) throws Exception {
+	
+	 List<Vue_Globale> rslt00 = new ArrayList<Vue_Globale>();
+ 
+         Connection conn = null;
+         Class.forName("org.postgresql.Driver");
+         conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/Test4"
+                 , "postgres", "root");
+         
+         long startTime = System.currentTimeMillis();
+
+     
+         PreparedStatement ps007 = conn.prepareStatement(
+         		  "			SELECT * from vue_globale\r\n"
+         	);
+    
+
+     	  
+        
+     	  ResultSet rs007 = ps007.executeQuery();
+         while (rs007.next()) {
+//             System.out.println("pap");
+      
+//             System.out.println(rs007.getString("acceptation"));
+
+             Vue_Globale blog = new Vue_Globale();
+        
+             blog.setDateDeb(rs007.getString("date_deb"));
+             blog.setDateFin(rs007.getString("date_fin"));
+             blog.setCode_requete(rs007.getLong("code_requete"));
+             blog.setVal_kpi1(rs007.getFloat("val_kpi1"));
+             blog.setVal_kpi2(rs007.getFloat("val_kpi2"));
+           	blog.setGap(rs007.getLong("gap"));
+           	blog.setGAP_par_100(rs007.getString("gap_par_100"));
+           	blog.setNbreRecordNotOk(rs007.getInt("nbre_record_not_ok"));
+         	blog.setNbreRecordOk(rs007.getInt("nbre_record_ok"));
+           	blog.setDataQualite(rs007.getFloat("data_qualite"));
+           	blog.setAcceptation(rs007.getString("acceptation"));
+             blog.setName_kpi(rs007.getString("name_kpi"));
+             blog.setSeuil_dataQuality(rs007.getFloat("seuil_data_quality"));
+             blog.setSeuil(rs007.getFloat("seuil"));
+             blog.setSeuil_gap(rs007.getFloat("seuil_gap"));
+
+             DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+             Date dateobj = new Date();
+             blog.dateExec = (dfff.format(dateobj));
+             java.text.DecimalFormat ddf = new java.text.DecimalFormat("###.##");
+             blog.tempsExec = ddf.format((System.currentTimeMillis() - startTime) );
+
+
+             rslt00.add(blog);
+         }
+
+         model.addAttribute("rslt", rslt00);
+
+     
+
+
+
+	 return "resultat5";
+
+	 }
 	
 //----------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------------------
@@ -2483,7 +2597,7 @@ public class Rsl_Test_SysController {
 			r.setDatabase_name(rs.getDatabase_name());
 		
 		
-			database2Service.InsertOrUpdate(r);
+//			database2Service.InsertOrUpdate(r);
 
 		}
 		
@@ -2664,59 +2778,42 @@ public class Rsl_Test_SysController {
 			PreparedStatement ps0 = conn.prepareStatement("delete from vue_detaille where code_requete= " + k.getId_kpi() + " and date between'"  + dateDeb +"' and '" + dateFin + "'");
 			int rs0 = ps0.executeUpdate();	
 			PreparedStatement ps = conn
-					.prepareStatement("select  k.name_kpi as name ,a.idkpi  Code_requete , a.date as Date , a.valeur_dim as dim , COALESCE(a.val_kpi,0) as val3  , COALESCE(b.val_kpi,0)  as val4 ,0 as nbreRecordOk ,0 as nbreRecordNotOk,abs(COALESCE(a.val_kpi,0) - COALESCE(b.val_kpi,0)) as gap from database1 a   \r\n"
-							+"Full outer join database2 b  on  a.id_kpi = b.id_kpi and a.valeur_dim = b.valeur_dim and a.date = b.date\r\n"
-							+"left outer join kpi k on k.id_kpi=a.id_kpi \r\n"
-							+"where a.id_kpi =" +k.id_kpi+" \r\n");
+					.prepareStatement(
+							  "        select coalesce (a.id_kpi,b.id_kpi ) as Code_requete\r\n"
+							+ "        , coalesce (a.date, b.date) as Date\r\n"
+							+ "        , coalesce (a.valeur_dim,b.valeur_dim) as valeur_dim\r\n"
+							+ "        , sum ( coalesce (a.val_kpi,0))  as val_kpi_a\r\n"
+							+ "        , sum ( coalesce (b.val_kpi,0)) as val_kpi_b\r\n"
+							+ "        , sum ( coalesce (a.val_kpi,0) - coalesce (b.val_kpi,0)) as gap\r\n"
+							+ "        , 100*abs (sum (coalesce (a.val_kpi,0) - coalesce (b.val_kpi,0))) / GREATEST  (abs(sum ( coalesce (a.val_kpi,0))), abs (sum ( coalesce (b.val_kpi,0))) ) as gap_par_100\r\n"
+							+ "        , case when (abs (sum ( coalesce (a.val_kpi,0) - coalesce (b.val_kpi,0))) >  K.seuil) then 1 else 0 end as nbre_record_not_ok\r\n"
+							+ "        , case when (abs (sum ( coalesce (a.val_kpi,0) - coalesce (b.val_kpi,0)))<=  K.seuil) then 1 else 0 end as nbre_record_ok\r\n"
+							+ "        ,  K.name_kpi as name, a.system as Database1 , b.system as Database2\r\n"
+							+ "        from database1 a\r\n"
+							+ "        full outer join database2 b on a.id_kpi = b.id_kpi\r\n"
+							+ "        and a.valeur_dim = b.valeur_dim\r\n"
+							+ "        and a.date = b.date\r\n"            
+							+ "		   full outer join kpi K on K.id_kpi = coalesce (a.id_kpi,b.id_kpi )\r\n"
+							+ "        WHERE 1=1 \r\n"
+							+ "        AND coalesce(a.id_kpi,b.id_kpi) = "+k.id_kpi+" \r\n"
+							+ "        and abs (coalesce (a.val_kpi,0) + coalesce (b.val_kpi,0))>0        \r\n"
+							+ "        and coalesce (a.date, b.date) between '"  + dateDeb +"' and '"  + dateFin +"'  \r\n"
+							+ "        GROUP BY  coalesce ( a.id_kpi, b.id_kpi ),  K.name_kpi ,a.system,b.system,coalesce (a.date, b.date),coalesce (a.valeur_dim,b.valeur_dim) ,  K.seuil\r\n");
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Vue_Detaillé blog = new Vue_Detaillé();
 				blog.setDate(rs.getString("Date"));
 				blog.setCode_requete(rs.getLong("Code_requete"));
-				blog.setVal_kpi1(rs.getFloat("val3"));
-				blog.setVal_kpi2(rs.getFloat("val4"));
-				 blog.setName_kpi(rs.getString("name"));
-				 blog.setVal_dim(rs.getString("dim"));
-		
-		            BigDecimal bd = new BigDecimal(rs.getLong("val4"));
-		            DecimalFormat f = new DecimalFormat("##.##");  // this will helps you to always keeps in two decimal places
-		           
-//		            System.out.println(f.format(rs.getFloat("val4"))); 
-//	                System.out.println(bd.setScale(2,BigDecimal.ROUND_UNNECESSARY));
-				 
-				DateFormat dfff = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-				Date dateobj = new Date();
-			 	
-			
-				
-				int j = 0;
-
-					
-				int i1 = 0;
-		
-
-                if (rs.getInt("gap") > k.getSeuil_gap()) {
-                	i1 = i1+1 ;
-            	blog.setNbreRecordNotOk(rs.getInt("nbreRecordNotOk") + i1);}
-
-				if (rs.getInt("gap") < k.getSeuil_gap()) {
-					j = j + 1;
-					
-			
-				
-				
-					blog.setNbreRecordOk(rs.getInt("nbreRecordOk") + j);
-				}
-				
-				
-			
-			
-            
+				blog.setVal_kpi1(rs.getFloat("val_kpi_a"));
+				blog.setVal_kpi2(rs.getFloat("val_kpi_b"));
+				blog.setName_kpi(rs.getString("name"));
+				blog.setVal_dim(rs.getString("valeur_dim"));	
 				blog.setGap(rs.getFloat("gap"));
-				java.text.DecimalFormat dff = new java.text.DecimalFormat("###.##");
-				BigDecimal bigD = new BigDecimal(
-						(rs.getInt("gap") * 100) / (Math.max(rs.getDouble("val4"), rs.getDouble("val3"))));
-				blog.setGAP_par_100(dff.format(bigD));			
+				blog.setGAP_par_100(rs.getString("gap_par_100"));
+				blog.setNbreRecordNotOk(rs.getInt("nbre_record_not_ok"));
+				blog.setNbreRecordOk(rs.getInt("nbre_record_ok"));
+				blog.setDatabase1(rs.getString("Database1"));
+				blog.setDatabase2(rs.getString("Database2"));			
 
 				rslt202.add(blog);
 			
@@ -2906,7 +3003,6 @@ public class Rsl_Test_SysController {
 	           
 	                blog.setDateDeb(dateDeb);
 	                blog.setDateFin(dateFin);
-	               
 	                blog.setCode_requete(rs007.getLong("Code_requete"));
 	                blog.setVal_kpi1(rs007.getFloat("Total_System_1"));
 	                blog.setVal_kpi2(rs007.getFloat("Total_System_2"));
